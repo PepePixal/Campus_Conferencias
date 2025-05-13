@@ -1,3 +1,5 @@
 includes/.env
+node_modules/
+vendor/
 APUNTES/
 
