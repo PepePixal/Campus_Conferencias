@@ -1,0 +1,38 @@
+@use '../../base/variables' as v;
+@use '../../base/mixins' as m;
+
+.formulario {
+    display: flex;
+    flex-direction: column;
+    //evitando la sobreanidación con sass, con la sintarxis BEM
+    //en lugar formulario_campo para la class, ponemos:
+    &__campo {
+        display: flex;
+        flex-direction: column;
+        gap: 1rem;
+        margin: 1.5rem 0;
+    }
+    &__label {
+        display: block;
+        font-size: 1.8rem;
+        color: rgba(v.$negro, .8);
+    }
+    &__input {
+        padding: 1rem;
+        border: 1px solid v.$gris-medio;
+    }
+
+    &__submit {
+        @include m.boton(v.$azul, v.$blanco);
+        
+        @include m.tablet {
+            //cambia el tamaño a auto y
+            //alinea el botón a la izquierda, dentro de flex
+            width: auto;
+            align-self: flex-start;      
+        }
+    }
+
+
+
+}

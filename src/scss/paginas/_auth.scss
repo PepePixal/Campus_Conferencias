@@ -1,0 +1,9 @@
+@use 'base/mixins' as m;
+
+.auth {
+    @include m.contenedor-sm;
+
+    //aprovechando la anidación de sass y la sintarxis BEM
+    //en lugar auth__heading para la class, podemos poner:
+  
+}
