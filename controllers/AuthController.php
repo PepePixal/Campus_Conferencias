@@ -92,7 +92,6 @@ class AuthController {
                     $email = new Email($usuario->email, $usuario->nombre, $usuario->token);
                     $email->enviarConfirmacion();
                     
-
                     if($resultado) {
                         header('Location: /mensaje');
                     }
@@ -102,7 +101,7 @@ class AuthController {
 
         // Render a la vista
         $router->render('auth/registro', [
-            'titulo' => 'Crea tu cuenta en DevWebcamp',
+            'titulo' => 'Crea tu cuenta en el Campus',
             'usuario' => $usuario, 
             'alertas' => $alertas
         ]);
