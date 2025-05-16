@@ -1,0 +1,27 @@
+@use '../../base/variables' as v;
+@use "sass:color";
+
+.alerta {
+
+    margin: 1rem;
+    padding: 1rem 1rem 1rem 3rem ;
+    text-transform: uppercase;
+    font-size: 1.2rem;
+    font-weight: bold;
+
+    //para elementos con class= alerta y alerta__error
+    &__error {
+        //adjust requiere: @use "sass:color";
+        background-color: color.adjust( v.$rojo, $lightness: 60% );
+        border-left: .5rem solid v.$rojo;
+        color: v.$rojo;
+    }
+    
+    //para elementos con class= alerta y alerta__exito
+    &__exito {
+        //adjust requiere: @use "sass:color";
+        background-color: color.adjust( v.$verde, $lightness: 60% );
+        border-left: .5rem solid v.$verde;
+        color: v.$verde;
+    }
+}

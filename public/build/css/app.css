@@ -664,4 +664,22 @@ h3 {
     justify-content: flex-end;
   }
 }
+
+.alerta {
+  margin: 1rem;
+  padding: 1rem 1rem 1rem 3rem;
+  text-transform: uppercase;
+  font-size: 1.2rem;
+  font-weight: bold;
+}
+.alerta__error {
+  background-color: #ffdcdc;
+  border-left: 0.5rem solid rgb(169, 0, 0);
+  color: rgb(169, 0, 0);
+}
+.alerta__exito {
+  background-color: hsl(120, 98.1900452489%, 103.3333333333%);
+  border-left: 0.5rem solid #02db02;
+  color: #02db02;
+}
 /*# sourceMappingURL=app.css.map */

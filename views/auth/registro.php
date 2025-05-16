@@ -2,6 +2,10 @@
     <h2 class="auth__heading"><?php echo $titulo; ?></h2>
     <p class="auth__texto">Regístrate en el Campus</p>
 
+    <?php 
+        require_once __DIR__ .  '/../templates/alertas.php';
+    ?>
+
     <form class="formulario" method="POST" action="/registro">
         <div class="formulario__campo">
             <label class="formulario__label" for="nombre">Nombre</label>
@@ -11,6 +15,7 @@
                 id="nombre"
                 name="nombre"
                 placeholder="Tu Nombre"
+                value="<?php echo $usuario->nombre; ?>"
             />    
         </div>
         
@@ -22,6 +27,7 @@
                 id="apellido"
                 name="apellido"
                 placeholder="Tu Apellido"
+                value="<?php echo $usuario->apellido; ?>"
             />    
         </div>
 
@@ -33,6 +39,7 @@
                 id="email"
                 name="email"
                 placeholder="Tu Email"
+                value="<?php echo $usuario->email; ?>"
             />    
         </div>
 
