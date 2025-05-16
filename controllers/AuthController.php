@@ -55,8 +55,7 @@ class AuthController {
             session_start();
             $_SESSION = [];
             header('Location: /');
-        }
-       
+        } 
     }
 
     public static function registro(Router $router) {
@@ -190,7 +189,7 @@ class AuthController {
 
                 // Redireccionar
                 if($resultado) {
-                    header('Location: /');
+                    header('Location: /login');
                 }
             }
         }
@@ -223,7 +222,7 @@ class AuthController {
 
         if(empty($usuario)) {
             // No se encontró un usuario con ese token
-            Usuario::setAlerta('error', 'Token No Válido');
+            Usuario::setAlerta('error', 'Cuenta NO confirmada - Token No válido');
         } else {
             // Confirmar la cuenta
             $usuario->confirmado = 1;

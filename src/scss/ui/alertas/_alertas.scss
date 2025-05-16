@@ -20,7 +20,7 @@
     //para elementos con class= alerta y alerta__exito
     &__exito {
         //adjust requiere: @use "sass:color";
-        background-color: color.adjust( v.$verde, $lightness: 60% );
+        background-color: color.adjust( v.$verde, $lightness: 50% );
         border-left: .5rem solid v.$verde;
         color: v.$verde;
     }

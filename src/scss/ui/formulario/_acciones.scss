@@ -5,9 +5,17 @@
     display: flex;
     justify-content: space-between;
 
+    &--centrar {
+        //el modificador --centrar hereda los estilos de .acciones
+        //y le sobreecribe el útimo justify-content
+        @extend .acciones;
+        justify-content: center;
+    }
+
     &__enlace {
         color: v.$negro;
         font-size: 1.5rem;
         //font-weight: v.$delgada;
     }
+
 }

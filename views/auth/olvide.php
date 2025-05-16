@@ -2,6 +2,11 @@
     <h2 class="auth__heading"><?php echo $titulo; ?></h2>
     <p class="auth__texto">Recupera tu acceos al Campus</p>
 
+    <?php
+        require_once __DIR__ . '/../templates/alertas.php';
+    ?>
+
+    <form class="formulario" method="POST" action="/olvide">
         <div class="formulario__campo">
             <label class="formulario__label" for="email">Email</label>
             <input 
