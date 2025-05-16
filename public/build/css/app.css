@@ -452,9 +452,13 @@ h3 {
 }
 .header__logo {
   font-size: clamp(2rem, -0.8rem + 10vw, 8rem);
+}
+.header__logo {
   background: linear-gradient(to right, #007df4, #00c8c2);
   background-clip: text;
   color: transparent;
+}
+.header__logo {
   text-align: center;
 }
 @media (min-width: 768px) {
@@ -528,13 +532,17 @@ h3 {
     color: #FFFFFF;
     text-align: center;
     margin-bottom: 2rem;
-    font-size: clamp(2rem, -0.8rem + 10vw, 2.5rem);
   }
 }
 @media (min-width: 768px) and (min-width: 1024px) {
   .barra__logo {
     text-align: left;
     margin: 0;
+  }
+}
+@media (min-width: 768px) {
+  .barra__logo {
+    font-size: clamp(2rem, -0.8rem + 10vw, 2.5rem);
   }
 }
 
@@ -578,13 +586,15 @@ h3 {
   color: #FFFFFF;
   text-align: center;
   margin-bottom: 2rem;
-  font-size: clamp(2rem, -0.8rem + 10vw, 2.5rem);
 }
 @media (min-width: 1024px) {
   .footer__logo {
     text-align: left;
     margin: 0;
   }
+}
+.footer__logo {
+  font-size: clamp(2rem, -0.8rem + 10vw, 2.5rem);
 }
 @media (min-width: 768px) {
   .footer__logo {
@@ -613,12 +623,6 @@ h3 {
   font-weight: 400;
 }
 
-.menu-redes {
-  display: flex;
-  justify-content: center;
-  gap: 2rem;
-  margin: 4rem 0;
-}
 .menu-redes__enlace::before {
   color: #FFFFFF;
   size: 2rem;
@@ -648,6 +652,12 @@ h3 {
 }
 .menu-redes__ocultar {
   display: none;
+}
+.menu-redes {
+  display: flex;
+  justify-content: center;
+  gap: 2rem;
+  margin: 4rem 0;
 }
 @media (min-width: 768px) {
   .menu-redes {

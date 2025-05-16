@@ -79,17 +79,21 @@
 //clamp(), requiere tamaño mínimo y máximo del texto,
 //el tamaño intermedio lo calcula automaticamente
 @mixin texto-fluido($min, $max) {
-    font-size: clamp($min, -0.8rem + 10vw, $max);
+    & {
+        font-size: clamp($min, -0.8rem + 10vw, $max);
+    }
 }
 
 //requiere un color inicio y color final para gradient
 @mixin texto-degradado($inicio, $final) {
-    //aplica el gradiante al contenedor
-    background: linear-gradient(to right, $inicio, $final);
-    //pasa background gradiante al texto
-    background-clip: text;
-    //hace el texto transparente para que se vea el background
-    color: transparent;
+    & {
+        //aplica el gradiante al contenedor
+        background: linear-gradient(to right, $inicio, $final);
+        //pasa background gradiante al texto
+        background-clip: text;
+        //hace el texto transparente para que se vea el background
+        color: transparent;
+    }
 }
 
 @mixin logo {

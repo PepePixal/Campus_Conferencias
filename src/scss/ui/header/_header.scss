@@ -43,7 +43,9 @@
     //requiere tamaño min y máximo
     @include m.texto-fluido(2rem, 8rem);
     @include m.texto-degradado(v.$azul, v.$secundario);
-    text-align: center;
+    & {
+      text-align: center;
+    }
     @include m.tablet {
       text-align: left;
       //se aprecia mejor el gradient con:

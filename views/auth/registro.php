@@ -2,7 +2,7 @@
     <h2 class="auth__heading"><?php echo $titulo; ?></h2>
     <p class="auth__texto">Regístrate en el Campus</p>
 
-    <form class="formulario">
+    <form class="formulario" method="POST" action="/registro">
         <div class="formulario__campo">
             <label class="formulario__label" for="nombre">Nombre</label>
             <input 
