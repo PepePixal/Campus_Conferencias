@@ -32,15 +32,24 @@ class AuthController {
                         $_SESSION['nombre'] = $usuario->nombre;
                         $_SESSION['apellido'] = $usuario->apellido;
                         $_SESSION['email'] = $usuario->email;
-                        $_SESSION['admin'] = $usuario->admin ?? null;
+                        $_SESSION['admin'] = $usuario->admin ?? 0;
+
+                        //Redirección según tipo de usario (admin o no admin)
+                        if($usuario->admin) {
+                            header('Location: /admin/dashboard');
+                        } else {
+                            header('Location: /finalizar-registro');
+                        }
                         
                     } else {
+                        //genera alertas tipo error
                         Usuario::setAlerta('error', 'Password Incorrecto');
                     }
                 }
             }
         }
 
+        //obtiene las alertas y las asigna a $alertas, para enviar en render()
         $alertas = Usuario::getAlertas();
         
         // Render a la vista 
