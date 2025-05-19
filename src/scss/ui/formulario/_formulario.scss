@@ -4,14 +4,47 @@
 .formulario {
     display: flex;
     flex-direction: column;
-    //evitando la sobreanidación con sass, con la sintarxis BEM
-    //en lugar formulario_campo para la class, ponemos:
+
+    &__fieldset {
+        border: none;
+        margin-top: 1rem;
+        padding: 0;
+    }
+
+    &__legend {
+        color: v.$gris;
+        font-size: 2.2rem;
+        margin-bottom: 1rem;
+    }
+
     &__campo {
         display: flex;
         flex-direction: column;
         gap: 1rem;
         margin: 1.5rem 0;
     }
+
+    //redes sociales form agrega ponente
+    &__contenedor-icono {
+        display: flex;
+        border-radius: 0.5rem;
+        //para que el elemento hijo __icono no desborde,
+        //se ajuste al padre y se aprecie su borde redondeado
+        overflow: hidden;
+    }
+    &__icono {
+        background-color: v.$gris-oscuro;
+        width: 4rem;
+        display:flex;
+        align-items: center;
+        justify-content: center;
+        
+        i {
+            color: v.$blanco;
+            font-size: 2rem;
+        }
+    }
+
     &__label {
         display: block;
         font-size: 1.8rem;
@@ -20,19 +53,36 @@
     &__input {
         padding: 1rem;
         border: 1px solid v.$gris-medio;
+        border-radius: 0.5rem;
+
+        &--file {
+            border: none;
+        }
+
+        &--sociales {
+            //hereda estilos de __input
+            @extend .formulario__input;
+            //toma todo el ancho disponible
+            flex: 1;
+            //quita los border izquierda del input 
+            border-top-left-radius: 0;
+            border-bottom-left-radius: 0;
+
+        }
     }
 
     &__submit {
-        @include m.boton(v.$azul, v.$blanco);
-        
+        @include m.boton(v.$azul, v.$blanco); 
         @include m.tablet {
             //cambia el tamaño a auto y
             //alinea el botón a la izquierda, dentro de flex
             width: auto;
-            align-self: flex-start;      
+            align-self: flex-start;
+
+            &--registrar {
+             width: 100%;
+            }
         }
     }
-
-
 
 }
