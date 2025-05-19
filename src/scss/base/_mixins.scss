@@ -72,7 +72,7 @@
 //hereda de headings con @include y agrega más
 @mixin nombre-pagina {
     @include headings;
-    margin: 6rem 0 3rem 0;
+    margin: 4rem 0 3rem 0;
     text-align: center;
 }
 
@@ -153,5 +153,18 @@
     &__ocultar {
         display: none;
     }
+}
 
+@mixin enlace {
+    //all: unset; elimina todos los estilos anteriores
+    //del elemento, para aplicarle los nuevos
+    all: unset;
+    color: v.$blanco;
+    font-size: 1.5rem;
+    text-transform: uppercase;
+
+    &:hover {
+      color: v.$azul;
+      cursor: pointer;
+    }
 }
