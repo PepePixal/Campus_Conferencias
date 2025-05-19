@@ -766,7 +766,7 @@ h3 {
   border-radius: 1rem;
   transition: 300ms background-color ease-in-out;
 }
-.dashboard__enlace:hover {
+.dashboard__enlace:hover, .dashboard__enlace--actual {
   background-color: #1E293B;
   color: #FFFFFF;
   border-radius: 1rem;

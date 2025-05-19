@@ -32,9 +32,6 @@
     }
 
     //input submit cerrar sesión vista admin
-    &__nav {
-
-    }
     &__form {
         display: flex;
         justify-content: center;
@@ -70,7 +67,10 @@
         //efecto al hover
         transition: 300ms background-color ease-in-out;
         
-        &:hover {
+        //estilo cuando hover sobre el enlace y también
+        //cuando el enlace sea el de la página actual
+        &:hover,
+        &--actual {
             background-color: v.$gris-oscuro;
             color: v.$blanco;
             border-radius: 1rem;
@@ -82,8 +82,7 @@
     &__menu-texto {
         font-size: 1.1rem;
         text-transform: uppercase;
-        margin-top: .5rem;
-        
+        margin-top: .5rem;  
     }
 
     &__contenido {
