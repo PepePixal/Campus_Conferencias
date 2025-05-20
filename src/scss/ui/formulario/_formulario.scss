@@ -71,6 +71,11 @@
         }
     }
 
+    //listado de etiquetas tags
+    &__listado {
+        @include m.tags;
+    }
+
     &__submit {
         @include m.boton(v.$azul, v.$blanco); 
         @include m.tablet {

@@ -179,3 +179,32 @@
 @mixin shadow {
     box-shadow: rgba(50, 50, 93, 0.25) 0px 13px 27px -5px, rgba(0, 0, 0, 0.3) 0px 8px 16px -8px;
 }
+
+//para resetear lista li
+@mixin reset-lista {
+    margin: 0;
+    padding: 0;
+    list-style: none;
+}
+
+//para los tags o etiquetas 
+@mixin tags {
+    //hereda estilos de reset-lista
+    @include reset-lista;
+    margin-top: 1.5rem;
+    display: flex;
+    //los elementos pueden saltar a la línea siguiente,
+    //cuando no quepan en la linea
+    flex-wrap: wrap;
+    gap: 1.5rem;
+
+    //al primer nivel de hijos >, con etiqueta li
+    > li {
+        background-color: v.$azul;
+        padding: 1rem;
+        border-radius: 0.5rem;
+        font-size: 1.4rem;
+        font-weight: v.$bold;
+        color: v.$blanco;
+    }
+}

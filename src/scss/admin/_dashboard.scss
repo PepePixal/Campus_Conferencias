@@ -46,6 +46,8 @@
         //si el body esta como flex column, su hijo
         //dashboard__grid, toma toda la columna con:
         flex: 1;
+        //para poner scroll al contenido
+        overflow-y: auto;
     }
     &__sidebar {
         background-color: v.$gris;
@@ -88,6 +90,8 @@
     &__contenido {
         width: 100%;
         padding: 1rem 1rem 3rem 1rem;
+        //scroll vertical, cuando se desborde el contenido
+        overflow-y: scroll;
         @include m.tablet {
             padding: 1rem 5rem 3rem 5rem;
         }
