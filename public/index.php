@@ -48,5 +48,4 @@ $router->get('/admin/registrados', [RegistradosController::class, 'index']);
 $router->get('/admin/regalos', [RegalosController::class, 'index']);
 
 
-
 $router->comprobarRutas();
