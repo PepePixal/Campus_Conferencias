@@ -216,4 +216,31 @@ class PonentesController {
         ]);
     }
 
+    public static function eliminar() {
+
+        //si la consulta al servidor es con el método POST
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            $id = $_POST['id'];
+
+            //obtener el ponente por su id
+            $ponente = Ponente::find($id);
+
+            //si ponente no ! esta declarado o no es diferente de null
+            if(!isset($ponente)) {
+                //redirigir al panel de ponentes
+                header('Location: /admin/ponentes');
+            }
+
+            //eliminar el ponente y obtener el resultado bool
+            $resultado = $ponente->eliminar();
+
+            //si el resultado de eliminar es true
+            if($resultado) {
+                //redirigir al panel de ponentes
+                header('Location: /admin/ponentes');
+            }
+        }
+    }
+
 }
