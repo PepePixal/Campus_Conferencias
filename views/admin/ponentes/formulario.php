@@ -58,6 +58,23 @@
             name="imagen"
         />
     </div>
+
+    <!-- muestra imagen_actual al editar, si existe -->
+    <!-- isset() comprueba si la variable existe y su valor no es null -->
+    <?php if(isset($ponente->imagen_actual)) { ?>
+        <p class="formulario__texto">Imagen Actual</p>
+        <div class="formulario__imagen">
+            <!-- $_ENV['HOST'] contiene el valor de la variable de entorno HOST, definida en .env -->
+            <!-- no es necesario indicar la carpeta /public/, porque el servidor se está ejecutando dentro de /public/ -->
+            <!-- con picture y source da la opción a tomar primero la imagen .webp y si no la .png -->
+            <picture>
+                <source srcset="<?php echo $_ENV['HOST'] . '/img/speakers/' . $ponente->imagen; ?>.webp" type="image/webp">
+                <source srcset="<?php echo $_ENV['HOST'] . '/img/speakers/' . $ponente->imagen; ?>.png" type="image/png">
+                <img src="<?php echo $_ENV['HOST'] . '/img/speakers/' . $ponente->imagen; ?>.png" alt="imagen ponente">
+            </picture>
+        </div>
+    <?php } ?>
+    
 </fieldset>
 
 <fieldset class="formulario__fieldset">
@@ -92,7 +109,7 @@
                 class="formulario__input--sociales"
                 name="redes[facebook]"
                 placeholder="Facebook"
-                value="<?php echo $ponente->facebook ?? ''; ?>"
+                value="<?php echo $redes->facebook ?? ''; ?>"
                 />
             </div>
         </div>
@@ -107,7 +124,7 @@
                 class="formulario__input--sociales"
                 name="redes[twitter]"
                 placeholder="twitter"
-                value="<?php echo $ponente->twitter ?? ''; ?>"
+                value="<?php echo $redes->twitter ?? ''; ?>"
                 />
             </div>
         </div>
@@ -122,7 +139,7 @@
                 class="formulario__input--sociales"
                 name="redes[youtube]"
                 placeholder="Youtube"
-                value="<?php echo $ponente->youtube ?? ''; ?>"
+                value="<?php echo $redes->youtube ?? ''; ?>"
                 />
             </div>
         </div>
@@ -137,7 +154,7 @@
                 class="formulario__input--sociales"
                 name="redes[instagram]"
                 placeholder="Instagram"
-                value="<?php echo $ponente->instagram ?? ''; ?>"
+                value="<?php echo $redes->instagram ?? ''; ?>"
                 />
             </div>
         </div>
@@ -152,7 +169,7 @@
                 class="formulario__input--sociales"
                 name="redes[tiktok]"
                 placeholder="Tiktok"
-                value="<?php echo $ponente->tiktok ?? ''; ?>"
+                value="<?php echo $redes->tiktok ?? ''; ?>"
                 />
             </div>
 
@@ -166,7 +183,7 @@
                 class="formulario__input--sociales"
                 name="redes[github]"
                 placeholder="Github"
-                value="<?php echo $ponente->github ?? ''; ?>"
+                value="<?php echo $redes->github ?? ''; ?>"
                 />
             </div>
         </div>

@@ -71,6 +71,15 @@
         }
     }
 
+    //imagen actual del form editar ponente
+    &__texto {
+        margin-top: 2rem;
+    }
+    &__imagen {
+        max-width: 20rem;
+        margin-bottom: 2rem;
+    }
+
     //listado de etiquetas tags
     &__listado {
         @include m.tags;
@@ -89,5 +98,7 @@
             }
         }
     }
+
+
 
 }

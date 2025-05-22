@@ -16,7 +16,17 @@
 
         //selecciona elemento html del form, con el atributo name="tags"
         //es el input hidden (oculto) del formulario agregar ponentes
-        const tagsInputHidden = document.querySelector('[name="tags"]')
+        const tagsInputHidden = document.querySelector('[name="tags"]');
+
+        //**Recuperar los tags del value del input hidden (oculto)
+        //si el atributo value de elemento tagsInputHidden, contiene info
+        if(tagsInputHidden.value !== '') {
+            //extrae los valores separados por ',' del string, 
+            //los convierte en arreglo y los asigna a tags
+            tags = tagsInputHidden.value.split(',');
+            //llama metodo que muestra los tags en el formulario
+            mostrarTags()
+        }
 
         //Escuchar cambios en el input, cuando se teclee algo, ejecuta función
         tagsInput.addEventListener('keypress', guardarTag);
