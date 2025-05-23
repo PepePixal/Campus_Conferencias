@@ -131,6 +131,32 @@ class ActiveRecord {
         return array_shift( $resultado ) ;
     }
 
+    //obtener de la DB, una cierta cantidad de registros, recibida en $por_pagina, 
+    //saltando la cantidad de registros recibidos en $offset
+    public static function paginar($por_pagina, $offset ) {
+        $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC LIMIT $por_pagina OFFSET $offset " ;
+        $resultado = self::consultarSQL($query);
+        return ( $resultado );
+    }
+
+    // Obtener la cantidad total de registros de una tabla, de la DB
+    public static function total() {
+        //consulta SQL
+        $query = "SELECT COUNT(*) FROM " . static::$tabla;
+        //consulta dirécta a la DB, enviando el query SQL,
+        //si la conexión ha sido exitosa, retorna un objeto con info de la consulta
+        $resultado = self::$db->query($query);
+        
+        //procesa la info de $resultado y obtiene el resultado de la consulta
+        //como un arreglo asociativo o index,
+        //donde el el primer elemento es el número total de registros
+        $total = $resultado->fetch_array();
+        
+        //extrae y retorna el prime valor del arreglo, la cantidad de registros
+        return array_shift($total);
+    }
+
+
     // crea un nuevo registro
     public function crear() {
         // Sanitizar los datos

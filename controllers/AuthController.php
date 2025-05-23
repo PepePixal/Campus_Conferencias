@@ -32,7 +32,7 @@ class AuthController {
                         $_SESSION['nombre'] = $usuario->nombre;
                         $_SESSION['apellido'] = $usuario->apellido;
                         $_SESSION['email'] = $usuario->email;
-                        $_SESSION['admin'] = $usuario->admin ?? 0;
+                        $_SESSION['admin'] = $usuario->admin ?? null;
 
                         //Redirección según tipo de usario (admin o no admin)
                         if($usuario->admin) {

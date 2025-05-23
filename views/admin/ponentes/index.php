@@ -57,3 +57,8 @@
         <p class="text-center">No existen Ponentes, todavía.</p>
     <?php } ?>
 </div>
+
+<!-- inyecta el código html generado en método paginacion() de la clase Paginacion.html -->
+<?php
+    echo $paginacion;
+?>

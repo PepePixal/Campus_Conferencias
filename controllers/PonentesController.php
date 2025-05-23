@@ -4,29 +4,67 @@ namespace Controllers;
 
 use MVC\Router;
 use Model\Ponente;
+use Classes\Paginacion;
 use Intervention\Image\ImageManagerStatic as Image;
 
 class PonentesController {
 
     public static function index(Router $router) {
-        //optiene arreglo de objetos, con todos los ponentes de la DB, 
-        //con el método all() exntendido en model Ponente, de model ActiveRecord
-        $ponentes =Ponente::all();
+
+        //**Paginación
+        //obtiene la página actual, del valor de la var 'page', en el query-string de la url,
+        //la primera vez que se accede a index $pagina_actual es null, porque $_GET está vacio
+        $pagina_actual = $_GET['page'];
+        //filtra para que el valor de $pagina_actual sea un entero válido
+        $pagina_actual = filter_var($pagina_actual, FILTER_VALIDATE_INT);
+        //si no existe página_actual (null) o su valor es < 1
+        if(!$pagina_actual || $pagina_actual < 1) {
+            //la primera vez que se accede a la función index(), $pagina_actual es null,
+            //porque el arreglo $_GET está vacio
+            //redirecciona a la url y genera el query-string con la var page
+            header('Location: /admin/ponentes?page=1');
+        }
+        //var con la cantidad de registros que se mostrarán por página
+        $registros_por_pagina = 5;
+        //llama método total() que obtiene la cantidad total de registros de la tabla
+        $total =Ponente::total();
+        //instancia de nuevo objeto Paginación, enviando parámetros
+        $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total);
+
+
+        //optiene arreglo de objetos, con los ponentes de la DB, 
+        $ponentes =Ponente::paginar($registros_por_pagina, $paginacion->offset());
+
+        //comprueba si el usuario no es tipo admin redirege a login
+        if(!is_admin()) {
+            header('Location: /login');
+        }
 
         //Enviar la vista y datos, al render()
         $router->render('admin/ponentes/index', [
             'titulo' => 'Ponentes / Conferencias',
-            'ponentes' => $ponentes
+            'ponentes' => $ponentes,
+            //envia al render, el código html retornado por el método paginacion()
+            //sobre el objeto $paginacion, del modelo Paginacion
+            'paginacion' => $paginacion->paginacion()
         ]);
     }
 
     public static function crear(Router $router) {
+        //comprueba si el usuario no es tipo admin redirege a login
+        if(!is_admin()) {
+            header('Location: /login');
+        }
 
         $alertas = [];
         //nueva instancia del objeto modelo Ponente.
         $ponente = new Ponente;
 
          if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //comprueba si el usuario no es tipo admin redirege a login
+            if(!is_admin()) {
+                header('Location: /login');
+            }
 
             //$_FILES, arreglo asoc con la info de los archivos subidos con form html y POST,
             //['imagen'] es el valor del atributo name, del input donde ponemos el archivo imagen,
@@ -101,6 +139,10 @@ class PonentesController {
     }
 
     public static function editar(Router $router) {
+        //comprueba si el usuario no es tipo admin redirege a login
+        if(!is_admin()) {
+            header('Location: /login');
+        }
 
         //define arreglo para almacenar las alertas
         $alertas = [];
@@ -134,6 +176,10 @@ class PonentesController {
 
         //cuando se envía el formulario editar via POST, para actualizar
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //comprueba si el usuario no es tipo admin redirege a login
+            if(!is_admin()) {
+                header('Location: /login');
+            }
 
             //** Comprobar si se ha subido una imagen nueva, al formulaio enviado
             //$_FILES, arreglo asoc con la info de los archivos subidos con form html y POST,
@@ -217,6 +263,10 @@ class PonentesController {
     }
 
     public static function eliminar() {
+        //comprueba si el usuario no es tipo admin redirege a login
+        if(!is_admin()) {
+            header('Location: /login');
+        }
 
         //si la consulta al servidor es con el método POST
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
