@@ -28,12 +28,20 @@ class PonentesController {
         $registros_por_pagina = 5;
         //llama método total() que obtiene la cantidad total de registros de la tabla
         $total =Ponente::total();
+
         //instancia de nuevo objeto Paginación, enviando parámetros
         $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total);
 
+        //validación, evita url con ?page= a una página mayor al total de paginas necesarias.
+        //Si total_paginas necesarias es < al número de la $pagina_actual:
+        if($paginacion->total_paginas() < $pagina_actual) {
+            //redirecciona a la url de la página 1
+            header('Location: /admin/ponentes?page=1');
+        }
 
-        //optiene arreglo de objetos, con los ponentes de la DB, 
-        $ponentes =Ponente::paginar($registros_por_pagina, $paginacion->offset());
+        //llama método paginar, que obtiene de la DB, la cantidad de ponentes en $registros_por_pagina,
+        //saltando la cantidad de ponentes obtenida con el método offset() 
+        $ponentes = Ponente::paginar($registros_por_pagina, $paginacion->offset());
 
         //comprueba si el usuario no es tipo admin redirege a login
         if(!is_admin()) {

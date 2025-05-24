@@ -131,8 +131,8 @@ class ActiveRecord {
         return array_shift( $resultado ) ;
     }
 
-    //obtener de la DB, una cierta cantidad de registros, recibida en $por_pagina, 
-    //saltando la cantidad de registros recibidos en $offset
+    //obtener de la DB, la cantidad (LIMIT) de registros recibida en $por_pagina, 
+    //saltando la cantidad (OFFSET) de registros recibidos en $offset. Orden desc por id
     public static function paginar($por_pagina, $offset ) {
         $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC LIMIT $por_pagina OFFSET $offset " ;
         $resultado = self::consultarSQL($query);
