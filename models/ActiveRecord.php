@@ -103,9 +103,10 @@ class ActiveRecord {
         return $resultado;
     }
 
-    // Obtener todos los Registros
-    public static function all() {
-        $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC";
+    // Obtener todos los Registros, recibe como parámetro el orden que queramos,
+    // si no recibe nada el orden por defecto es DESC
+    public static function all($orden = 'DESC') {
+        $query = "SELECT * FROM " . static::$tabla . " ORDER BY id $orden";
         $resultado = self::consultarSQL($query);
         return $resultado;
     }

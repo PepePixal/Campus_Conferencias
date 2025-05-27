@@ -109,12 +109,12 @@ class PonentesController {
             //para poder sincronizarlo con el modelo $ponente
             $_POST['redes'] = json_encode( $_POST['redes'], JSON_UNESCAPED_SLASHES);
 
-            //sincroniza los atributos del objeto $ponente con los datos del
+            //sincroniza las propiedades del objeto $ponente con los datos del
             //arreglo asoc. enviados con el formulario, en $_POST
             $ponente->sincronizar($_POST);
 
-            //validar los atributos del objeto $ponente sincronizado,
-            //retorna arreglo con alertas de validación, si las hay
+            //validar las propiedades del objeto $ponente sincronizado.
+            //Retorna arreglo con alertas de validación, si las hay
             $alertas = $ponente->validar();
 
             //si no hay alertas, se ha pasado la validación del formulario
