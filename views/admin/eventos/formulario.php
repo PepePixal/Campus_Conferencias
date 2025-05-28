@@ -59,12 +59,14 @@
             <?php } ?>
         </div>
     </div>
+    <!-- input oculto para asignar el id del día selecionado (dia_id), para guardar en la DB -->
+    <input type="hidden" name="dia_id" value="">
 
     <!-- sobre esta sección con id=horas se aplicará código JS -->
     <div id="horas" class="formulario__campo">
         <label class="formulario__label">Seleccionar Horario</label>
 
-        <ul class="horas">
+        <ul id="horas" class="horas">
             <?php foreach($horas as $hora) { ?>
                 <li class="horas__hora"><?php echo $hora->hora; ?></li>
             <?php } ?>

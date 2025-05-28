@@ -131,6 +131,31 @@ class ActiveRecord {
         $resultado = self::consultarSQL($query);
         return array_shift( $resultado ) ;
     }
+    
+    // Busqueda Where según parámetros recibidos como arreglo
+    public static function whereArray($array = []) {
+        //define primera parte del $query SQL
+        $query = "SELECT * FROM " . static::$tabla . " WHERE ";
+        //itera el arreglo recibido, obteniendo llave $key y valor $value, de cada elemento
+        foreach($array as $key => $value){
+            //si la llave $key que está iterando, ES LA ÚLTIMA del arreglo
+            if($key == array_key_last($array)) {
+                //concatena a la parte del $query ya definida, sin el AND:
+                //el nombre de la llave y su valor, de cada elemento recibido en $array
+                $query .= " $key = '$value'";
+            
+            ///si la llave $key que está iterando, todavía NO es la última del arreglo:
+            } else {
+                //concatena a la parte del $query ya definida, con el AND:
+                //el nombre de la llave y su valor, de cada elemento recibido en $array
+                $query .= " $key = '$value' AND ";
+            }
+        }
+
+        $resultado = self::consultarSQL($query);
+        //extrae y retorna el primer valor del arreglo $resultado
+        return array_shift( $resultado ) ;
+    }
 
     //obtener de la DB, la cantidad (LIMIT) de registros recibida en $por_pagina, 
     //saltando la cantidad (OFFSET) de registros recibidos en $offset. Orden desc por id
