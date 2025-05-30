@@ -21,8 +21,11 @@
         //son todas las opciones del input type radio, obtenidas de la var $dias,
         //que contiene los elementos con id 1 Viernes y 2 Sábado, de la tabla dias, de la DB
         const dias = document.querySelectorAll('[name="dia"]');
+
         //selecciona elemento html cuyo atributo name="dia_id". El input oculto.
         const inputHiddenDia = document.querySelector('[name="dia_id"]');
+        //selecciona elemento html cuyo atributo name="hora_id". El input oculto.
+        const inputHiddenHora = document.querySelector('[name="hora_id"]');
         
         //asigna escuchador de evento change y función, al select de categoría del formulario
         categoria.addEventListener('change', terminoBusqueda);
@@ -41,6 +44,19 @@
             //y a la propiedad dia del objeto busqueda, le asigna ó 1 ó 2 (ó Viernes ó Sabado),
             busqueda[e.target.name] = e.target.value;
 
+            //**Una vez almacenados en busqueda, la categoría y o el día, seleccionados, y antes buscar eventos:
+            //Reiniciar el value de los campos input ocultos, del form: 
+            inputHiddenHora.value = '';
+            inputHiddenDia.value = '';
+            //Reinicia la clase de las horas seleccionadas, del form:
+            //selecciona el elemento (li) con clase .horas__hora--seleccionada
+            const horaPrevia = document.querySelector('.horas__hora--seleccionada');
+            //si existe algún elemento con esa clase:
+            if(horaPrevia) {
+                //elimina la clase del elemento
+                horaPrevia.classList.remove('horas__hora--seleccionada');
+            }
+
             //La API requiere como argumentos, dia_id y categoria_id, que obtendremos del objeto busqueda. 
             //Validar que no están vacios, antes de llamar a la funcion que consulta a la API.
             //Si alguno de los values (atributos) del Objeto busqueda contiene '' strinc vacio, para el código
@@ -52,24 +68,83 @@
             buscarEventos();
         }
 
-        //función que consulta a la API APIEventos.php, a través del endpoint /api/eventos-horario
+        //función que consulta a la API APIEventos.php, para obtener eventos según la categoría y el día
         async function buscarEventos() {
 
-            //deconstrucción del objeto busqueda, en dos variables con sus valores
+            //deconstrucción de las propiedades de objeto busqueda, a dos variables con sus valores
             const { dia, categoria_id} = busqueda
             //define url para la consulta, incluyendo query string ? con los parametros para la API, 
             const url = `/api/eventos-horario?dia_id=${dia}&categoria_id=${categoria_id}`;
            
             //consulta fetch a la ulr de la API
             const resultado = await fetch(url);
-            //obtiene eventos como resultado json
+            //obtiene los eventos como objetos json, del resultado de la consulta y
+            // los retorna como arreglo a la var eventos
             const eventos = await resultado.json();
 
-            obtenerHorasDisponibles()
+            //llama metodo que obtiene las horas disponibles,
+            // enviando los eventos ya registrados, como argumento
+            obtenerHorasDisponibles(eventos);
         }
 
-        function obtenerHorasDisponibles() {
-            
+        //recibe los eventos ya registrados como parámetro,
+        //para obtener los li con las horas disponibles
+        function obtenerHorasDisponibles(eventos) {
+
+            //**Antes de obtener las horas disponibles, deshabilita todas las horas.
+            //selecciona todos los li, del elemento padre con id horas,
+            const listadoHoras = document.querySelectorAll('#horas li');
+            //itera el listado con todas las horas y les agrega la clase horas__hora--deshabilitada
+            listadoHoras.forEach(li => li.classList.add('horas__hora--deshabilitada'));
+
+            //**Comprobar los eventos ya registrados,
+            //mapea los eventos y genera un nuevo arreglo de horas, con la hora en hora_id, de cada evento,
+            //asigna el nuevo arreglo a horasTomadas
+            const horasTomadas = eventos.map( evento => evento.hora_id);
+
+            //listadoHoras es de tipo NodeList porque viene del querySelector,
+            //convertir el NodeList a arreglo con los li, para poder filtrarlo posteriormente
+            const listadoHorasArray = Array.from(listadoHoras);
+
+            //compara los li de listadoHorasArray con los li de horasTomadas, por sus atributos dataset.horaId,
+            //filtra los que NO ! coincidan, obteniendo un nuevo arreglo resultado con los li de la horas no tomadas
+            const resultado = listadoHorasArray.filter( li => !horasTomadas.includes(li.dataset.horaId))
+
+            //itera resultado con los li de las horas no reservadas y les quita la clase horas__hora--deshabilidada
+            resultado.forEach( li => li.classList.remove('horas__hora--deshabilitada'));
+
+            //selecciona, del elemento padre ul con id horas, 
+            //, todos los elementos li, menos (:not) los que tienen la clase .horas__hora--deshabilitada 
+            const horasDisponibles = document.querySelectorAll('#horas li:not(.horas__hora--deshabilitada)');
+            //itera horasDisponibles para asignarle un evento click y función, a cada elemento li (cada hora)
+            horasDisponibles.forEach(hora => hora.addEventListener('click', seleccionarHora))   
         }
+
+        //se ejecuta con el evento (e) click, de cada hora del formulario
+        function seleccionarHora(e) {
+            //**deshabilitar la hora previa seleccionada, si hay nueva selección de hora
+            //asigna a horaPrevia, el elemento html cuya clase tenga '.horas__hora--selccionada'
+            const horaPrevia = document.querySelector('.horas__hora--seleccionada');
+            //si existe un elemento en horaPrevia:
+            if(horaPrevia) {
+                //elimina la clase del elemento (li)
+                horaPrevia.classList.remove('horas__hora--seleccionada')
+            }
+
+            //agrega la clase 'horas__hora--seleccionada,
+            //al elemento html (li) que dispara el evento (e) al click.
+            //clase agregada para dar estilos css
+            e.target.classList.add('horas__hora--seleccionada');
+
+            //al atributo value, del input oculto con name="hora_id",
+            //(que hemos asisnado a la var inputHiddenHora),
+            //le agrega el valor del atributo personalizado (dataset) data-hora-id,
+            //del elemento li, que origina el evento (e), con click     
+            inputHiddenHora.value = e.target.dataset.horaId;
+
+            //asignar el value del dia seleccionado (checked), al value del input dia, oculto
+            inputHiddenDia.value = document.querySelector('[name="dia"]:checked').value 
+        }
+
     }
 })();

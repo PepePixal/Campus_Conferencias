@@ -8,11 +8,11 @@ class APIEventos {
 
     public static function index() {
 
-        //asigna a $dia_id,  el valor del elemento dia_id,
-        //del arreglo superglobal $_GET
+        //asigna a $dia_id,  el valor del elemento con clave dia_id,
+        //del arreglo de la var superglobal $_GET
         $dia_id = $_GET['dia_id'] ?? '';
-        //asigna a $categoria_id, el valor del elemento categoria_id,
-        //del arreglo superglobal $_GET
+        //asigna a $categoria_id, el valor del elemento con clave categoria_id,
+        //del arreglo de la var superglobal $_GET
         $categoria_id = $_GET['categoria_id'] ?? '';
         
         //filtra el valor entero de la variable y lo reasigna

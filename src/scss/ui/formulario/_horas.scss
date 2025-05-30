@@ -14,8 +14,34 @@
         border-radius: 1rem;
         padding: 1rem;
         text-align: center;
+
+        &:hover {
+            cursor: pointer;
+        }
+
+        //cuando la hora tenga la class horas__hora--selecionada
+        &--seleccionada {
+            //herda los estilos de __hora
+            @extend .horas__hora;
+            //agrega nuevos estilos
+            background-color: v.$azul;
+            color: v.$blanco;
+        }
+
+        //mientras las horas tengan la class horas__hora--deshabilitada
+        &--deshabilitada {
+            //hereda estilos de __hora
+            @extend .horas__hora;
+            //agrega nuevos estilos
+            border: 1px solid v.$gris;
+            color: v.$gris;
+            opacity: .5;
+
+            &:hover {
+                cursor: not-allowed;
+            }
+
+        }
     }
-    &:hover {
-        cursor: pointer;
-    }
+
 }

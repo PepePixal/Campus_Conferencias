@@ -152,9 +152,10 @@ class ActiveRecord {
             }
         }
 
+        //ejecuta la consulta con el $query enviado y obtiene resultado
         $resultado = self::consultarSQL($query);
-        //extrae y retorna el primer valor del arreglo $resultado
-        return array_shift( $resultado ) ;
+        //retorna arreglo $resultado
+        return ( $resultado );
     }
 
     //obtener de la DB, la cantidad (LIMIT) de registros recibida en $por_pagina, 

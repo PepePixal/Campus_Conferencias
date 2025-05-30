@@ -58,9 +58,12 @@
                 </div>
             <?php } ?>
         </div>
+
+        <!-- input oculto para asignar el id del día selecionado (dia_id), para guardar en la DB -->
+        <input type="hidden" name="dia_id" value="">
+
     </div>
-    <!-- input oculto para asignar el id del día selecionado (dia_id), para guardar en la DB -->
-    <input type="hidden" name="dia_id" value="">
+    
 
     <!-- sobre esta sección con id=horas se aplicará código JS -->
     <div id="horas" class="formulario__campo">
@@ -68,9 +71,14 @@
 
         <ul id="horas" class="horas">
             <?php foreach($horas as $hora) { ?>
-                <li class="horas__hora"><?php echo $hora->hora; ?></li>
+                <!-- data-hora-id es un atributo personalizado -->
+                <li data-hora-id="<?php echo $hora->id; ?>" class="horas__hora horas__hora--deshabilitada"><?php echo $hora->hora; ?></li>
             <?php } ?>
         </ul>
+
+        <!-- input oculto para asignar el id de la hora selecionada (hora_id), para guardar en la DB -->
+        <input type="hidden" name="hora_id" value="">
+
     </div>
 </fieldset>
 
