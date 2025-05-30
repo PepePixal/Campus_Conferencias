@@ -93,6 +93,10 @@
             id="ponentes"
             placeholder="Buscar Ponente"
         />
+        <!-- para insertar los li de los ponentes encotrados, desde ponentes.js -->
+        <ul id="listado-ponentes" class="listado-ponentes">
+                
+        </ul>
     </div>
 
     <div class="formulario__campo">
