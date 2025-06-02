@@ -29,7 +29,8 @@ class PonentesController {
         //llama método total() que obtiene la cantidad total de registros de la tabla
         $total =Ponente::total();
 
-        //instancia de nuevo objeto Paginación, enviando parámetros
+        //obtiene objeto con el modelo Paginacion, enviando argumentos.
+        //Este objeto se requerirá para obtener el offset de la paginación
         $paginacion = new Paginacion($pagina_actual, $registros_por_pagina, $total);
 
         //validación, evita url con ?page= a una página mayor al total de paginas necesarias.
@@ -39,8 +40,9 @@ class PonentesController {
             header('Location: /admin/ponentes?page=1');
         }
 
-        //llama método paginar, que obtiene de la DB, la cantidad de ponentes en $registros_por_pagina,
-        //saltando la cantidad de ponentes obtenida con el método offset() 
+        //obtiene los ponentes por página de la DB, con el método paginar(), que requiere
+        //la cantidad de ponentes por página que quereamos mostrar y el offset, obtenido con el método offgset()
+        //El offset es la cantidad de registros a saltar del total, según  los registros por pagina que queramos mostrar y la página a mostrar
         $ponentes = Ponente::paginar($registros_por_pagina, $paginacion->offset());
 
         //comprueba si el usuario no es tipo admin redirege a login
@@ -159,10 +161,10 @@ class PonentesController {
         //recibido en la url .../admin/ponentes/editar?id= ,
         //enviada por el enlace editar de editar ponentes.
         $id = $_GET['id'];
-
         //validar que el id sea un valor tipo entero,
         //si es un entero lo retorna, si no, retorna false
         $id = filter_var($id, FILTER_VALIDATE_INT);
+        
         //si el $id no existe o no es un entero, (false)
         if(!$id){
             //redirigir al endpoint ponentes
