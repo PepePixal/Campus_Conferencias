@@ -16,16 +16,14 @@
     <div class="formulario__campo">
         <label for="descripcion" class="formulario__label">Descripción Evento</label>
         <textarea 
-            rows= "5"
             class="formulario__input"
             id="descripcion"
             name="descripcion"
             placeholder="Descripción Evento"
-            value="<?php echo $evento->descripcion; ?>"
-        ><?php echo $evento->descripcion; ?>
-        </textarea>
+            rows= "5"
+        ><?php echo $evento->descripcion; ?></textarea>
     </div>
-
+    
     <div class="formulario__campo">
         <label for="categoria" class="formulario__label">Categoría o tipo de Evento</label>
         <select 
@@ -94,9 +92,11 @@
             placeholder="Buscar Ponente"
         />
         <!-- para insertar los li de los ponentes encotrados, desde ponentes.js -->
-        <ul id="listado-ponentes" class="listado-ponentes">
-                
+        <ul id="listado-ponentes" class="listado-ponentes">  
         </ul>
+        
+        <!-- para asignar el value del ponente seleccionado en el form, para guardar en la BD -->
+        <input type="hidden" name="ponente_id" value="">
     </div>
 
     <div class="formulario__campo">

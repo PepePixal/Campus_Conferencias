@@ -15,6 +15,8 @@
 
         //seleciona elemento html cuya id es
         const listadoPonentes = document.querySelector('#listado-ponentes');
+        //selecciona elemento html, el input oculto para el ponente
+        const ponenteHidden = document.querySelector('[name="ponente_id"]');
 
         //llama a funcion
         obtenerPonentes();
@@ -34,10 +36,8 @@
             const resultado = await respuesta.json(); 
             
             //llama función enviando el arreglo de objetos json resulado con toda la info
-            formatearPonentes(resultado);
-           
+            formatearPonentes(resultado);  
         }
-
 
         //obtiene un nuevo arreglo solo con la info necesaria, a partir del arrayPonentes recibido
         function formatearPonentes(arrayPonentes = []) {
@@ -125,23 +125,27 @@
 
             //si ponentesFiltrados contiene algo:
             if(ponentesFiltrados.length > 0) {
+
                 //itera los ponentes filtrados encotrados y por cada ponente:
                 ponentesFiltrados.forEach( ponente => {
-                    //crea elemento htmo li y lo asigna a ponentHTML
+                    //crea elemento html li y lo asigna a ponentHTML
                     const ponenteHTML = document.createElement('LI');
                     //agrega class al elemento li
                     ponenteHTML.classList.add('listado-ponentes__ponente');
                     //agrega al contenido del li, el nombre del ponente filtrado
                     ponenteHTML.textContent = ponente.nombre;
-                    //agrega el id del poenent, al atributo dataset ponenteId al li
+                    //agrega el id del poenente, al atributo dataset ponenteId al li
                     ponenteHTML.dataset.ponenteId = ponente.id
-    
+                    //agrega evento onclick al ponente y metodo a ejecutar
+                    ponenteHTML.onclick =  seleccionarPonente;
+
                     //Agregar el o los li al DOM
                     listadoPonentes.appendChild(ponenteHTML);
                 })
 
             //si ponentesFiltrados NO contiene nada
             } else {
+                //crea elemento html p
                 const noResultados = document.createElement('P');
                 noResultados.classList.add('listado-ponentes__no-resultado');
                 noResultados.textContent = 'No Hay Resultados en tu búsquda';
@@ -149,9 +153,28 @@
                 //Agregar el P párrafo al DOM
                 listadoPonentes.appendChild(noResultados);
              }
-
         }
 
+        function seleccionarPonente(e) {
+            //selecciona el elemento html que dispara el evento
+            const ponente = e.target
+
+            //**eliminar la clase --seleccionado, por si ya la tiene asignada
+            //selecciona elemento html con clase = , puede que ya exista o no
+            const ponentePrevio = document.querySelector('.listado-ponentes__ponente--seleccionado');
+            //si ya existe un elemento con esa clase, se la elimina
+            if(ponentePrevio) {
+                ponentePrevio.classList.remove('listado-ponentes__ponente--seleccionado');
+            }
+
+            //agrega clase al elemento html
+            ponente.classList.add('listado-ponentes__ponente--seleccionado');
+
+            //agrega el valor del atributo dataset ponenteId del ponente seleccionado, 
+            // al atributo value del input poneneteHidden
+            ponenteHidden.value = ponente.dataset.ponenteId
+
+        }
     }
 
 })();

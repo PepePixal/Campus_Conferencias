@@ -52,11 +52,9 @@ class EventosController {
                 //si hay $resultado, se ha guardado correctamente
                 if($resultado) {
                     //redirigir al endpoint eventos
-                    haeader('Location: /admin/eventos');
+                    header('Location: /admin/eventos');
                 }
-
             }
-
         }
 
 
