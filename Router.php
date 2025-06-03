@@ -37,8 +37,8 @@ class Router
     }
 
     //recibe la vista y los datos
-    public function render($view, $datos = [])
-    {
+    public function render($view, $datos = []) {
+        
         foreach ($datos as $key => $value) {
             $$key = $value; 
         }

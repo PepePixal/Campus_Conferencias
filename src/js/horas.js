@@ -21,6 +21,14 @@
         //selecciona elemento html cuyo atributo name="hora_id". El input oculto.
         const inputHiddenHora = document.querySelector('[name="hora_id"]');
 
+        //asigna escuchador de evento change y función, al select de categoría del formulario
+        categoria.addEventListener('change', terminoBusqueda);
+        
+        //itera los dias, para poder asignar un escuchador de evento (change) y una función,
+        //a cada elemento dia de dias.
+        dias.forEach(dia => dia.addEventListener('change', terminoBusqueda));
+
+
         //objeto para almacenar temporalmente, la categoria y el dia seleccionados en el form
         let busqueda = {
             //asigna a categoria_id, el valor (numérico +) de su value, si ya lo tiene, si no ||, no asigna nada ''
@@ -30,45 +38,34 @@
         }
         
         //validar, que las propiedades del objeto busqueda contiene info,
-        //Si de los values de las propiedades del Objeto busqueda, ! NO contiene '' string vacio,
+        //Si los values de las propiedades del Objeto busqueda, ! NO contiene '' string vacio,
         //significa que tienen información, esto ocurre cuando los estamos editanto, no cuando se crean
         if(!Object.values(busqueda).includes('')) {
 
-            //agrega una función anónima asyncrona dentro de una función IIFE,
-            //para esperar que se ejecute la funci´n buscarEventos()
+            //función IIFE que se autoejecuta, con una función anónima asyncrona, para poder usar await
             (async () => {
 
-                //llama método que busca eventos según la categoria_id y el dia,
-                //y a su vez obtiene las horas disponibles y ocupadas
+                //llama método que busca eventos según la categoria_id y el dia, consultando a la API,
+                //y a su vez obtiene las horas disponibles y ocupadas.
+                //el await hace que se ejecute completamente la función, antes de continuar con el código siguiente
                 await buscarEventos();
 
-                //obtiene el value del inputHiddenHora y lo asigna a id
+                //obtiene el valor del value de inputHiddenHora y lo asigna a id
                 const id = inputHiddenHora.value;
                 
                 //** Resaltar la hora seleccionada para el evento con esta categoria_id y dia,
                 //** el evento que estamos editando.
                 //obtiene el elemento html cuyo atributo personalizado data-hora-id = al value del inputHiddenHora, en id
                 const horaSeleccionada = document.querySelector(`[data-hora-id="${id}"]`);
-
-                
                 //elimina la clase horas__hora--deshabilitada a la hora del elemento que estamos editando
                 horaSeleccionada.classList.remove('horas__hora--deshabilitada');
-                
                 horaSeleccionada.classList.add('horas__hora--seleccionada');
 
+                //permite volver a seleccionar la hora que ya estaba seleccionada inicialmente
+                horaSeleccionada.onclick = seleccionarHora;
 
             })();
- 
         }
-
-
-
-        //asigna escuchador de evento change y función, al select de categoría del formulario
-        categoria.addEventListener('change', terminoBusqueda);
-        
-        //itera los dias, para poder asignar un escuchador de evento (change) y una función,
-        //a cada elemento dia de dias.
-        dias.forEach(dia => dia.addEventListener('change', terminoBusqueda));
 
         //función terminoBusqueda que recibe eventos en (e),
         //tanto de categoria como de dia
@@ -181,6 +178,5 @@
             //asignar el value del dia seleccionado (checked), al value del input dia, oculto
             inputHiddenDia.value = document.querySelector('[name="dia"]:checked').value 
         }
-
     }
 })();

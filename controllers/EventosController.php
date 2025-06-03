@@ -42,7 +42,6 @@ class EventosController {
         //El offset es la cantidad de registros a saltar del total, según los registros que queramos mostrar y la página a mostrar
         $eventos = Evento::paginar($por_pagina, $paginacion->offset());
 
-
         // Creamos un array de objetos stdClass para la vista
         $eventosView = [];
 
@@ -65,7 +64,6 @@ class EventosController {
 
             //por cada evento, asigna las propiedades y sus valores, al arrglo eventosView[] que pasaremos a la vista
             $eventosView[] = $eventoView;
-
         }
 
         $router->render('admin/eventos/index', [
@@ -117,7 +115,6 @@ class EventosController {
             }
         }
 
-
         $router->render('admin/eventos/crear', [
             'titulo' => 'Conferencias y Workshops',
             'alertas' => $alertas,
@@ -138,7 +135,7 @@ class EventosController {
         //define arreglo para almacenar las alertas
         $alertas = [];
 
-        //obtiene el id de la $_GET con los datos recibidos por la URL
+        //obtiene el id de $_GET, con los datos recibidos por la URL
         $id = $_GET['id'];
         //filtra para obtener un valor entero válido
         $id = filter_var($id, FILTER_VALIDATE_INT);
@@ -149,7 +146,7 @@ class EventosController {
             header('Location: /admin/eventos');
         }
         
-        //obtiene el objeto evento a editar, por su id, obtenido de la $_GET de la url
+        //obtiene el objeto evento por su id, obtenido de $_GET de la url
         $evento = Evento::find($id);
         //valida, si no existe el $evento buscado:
         if(!$evento) {
@@ -161,15 +158,11 @@ class EventosController {
         //envía el orden ASCencente como parámetro. (Conf y Works)
         $categorias = Categoria::all('ASC');
         //obtiene los días de la DB, con el model Dia,
-        //envía el orden ASCencente como parámetro. (Sábado Viernes)
+        //envía el orden ASCencente como parámetro. (Sábado y Viernes)
         $dias = Dia::all('ASC');
         //obtiene las horas de la DB, con el model Hora,
-        //envía el orden ASCencente como parámetro. (Sábado Viernes)
+        //envía el orden ASCencente como parámetro.
         $horas = Hora::all('ASC');
-
-        
-
-
 
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
@@ -193,7 +186,6 @@ class EventosController {
                 }
             }
         }
-
 
         $router->render('admin/eventos/editar', [
             'titulo' => 'Editar Evento',
