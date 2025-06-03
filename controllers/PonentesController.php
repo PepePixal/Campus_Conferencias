@@ -71,6 +71,7 @@ class PonentesController {
         $ponente = new Ponente;
 
          if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
             //comprueba si el usuario no es tipo admin redirege a login
             if(!is_admin()) {
                 header('Location: /login');
@@ -186,6 +187,7 @@ class PonentesController {
 
         //cuando se envía el formulario editar via POST, para actualizar
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
+
             //comprueba si el usuario no es tipo admin redirege a login
             if(!is_admin()) {
                 header('Location: /login');
@@ -273,13 +275,14 @@ class PonentesController {
     }
 
     public static function eliminar() {
-        //comprueba si el usuario no es tipo admin redirege a login
-        if(!is_admin()) {
-            header('Location: /login');
-        }
-
+        
         //si la consulta al servidor es con el método POST
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            
+            //comprueba si el usuario no es tipo admin redirege a login
+            if(!is_admin()) {
+                header('Location: /login');
+            }
 
             $id = $_POST['id'];
 

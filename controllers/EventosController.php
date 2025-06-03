@@ -14,6 +14,11 @@ class EventosController {
 
     public static function index(Router $router) {
 
+        //comprueba si el usuario no es tipo admin redirege a login
+        if(!is_admin()) {
+            header('Location: /login');
+        }
+
         //**Paginación
         //obtiene la página actual, del valor de la var 'page', en el query-string de la url,
         //la primera vez que se accede a index $pagina_actual es null, porque $_GET está vacio
@@ -77,6 +82,11 @@ class EventosController {
 
     public static function crear(Router $router) {
 
+        //comprueba si el usuario no es tipo admin redirege a login
+        if(!is_admin()) {
+            header('Location: /login');
+        }
+
         $alertas = [];
 
         //obtiene las categorias de la DB, con el model Categoria
@@ -93,6 +103,11 @@ class EventosController {
         $evento = new Evento;
 
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            //comprueba si el usuario no es tipo admin redirege a login
+            if(!is_admin()) {
+                header('Location: /login');
+            }
 
             //sincroniza el objeto $evento con el contenido de $_POST
             $evento->sincronizar($_POST);
@@ -128,9 +143,9 @@ class EventosController {
     public static function editar(Router $router) {
 
         //comprueba si el usuario no es tipo admin redirege a login
-        // if(!is_admin()) {
-        //     header('Location: /login');
-        // }
+        if(!is_admin()) {
+            header('Location: /login');
+        }
 
         //define arreglo para almacenar las alertas
         $alertas = [];
@@ -166,6 +181,11 @@ class EventosController {
 
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
+            //comprueba si el usuario no es tipo admin redirege a login
+            if(!is_admin()) {
+                header('Location: /login');
+            }
+
             //sincroniza el objeto $evento con el contenido de $_POST
             $evento->sincronizar($_POST);
 
@@ -198,32 +218,35 @@ class EventosController {
     }
 
     public static function eliminar() {
-        //comprueba si el usuario no es tipo admin redirege a login
-        // if(!is_admin()) {
-        //     header('Location: /login');
-        // }
 
         //si la consulta al servidor es con el método POST
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
 
-            $id = $_POST['id'];
-
-            //obtener el ponente por su id
-            $ponente = Ponente::find($id);
-
-            //si ponente no ! esta declarado o no es diferente de null
-            if(!isset($ponente)) {
-                //redirigir al panel de ponentes
-                header('Location: /admin/ponentes');
+            //comprueba si el usuario no es tipo admin redirege a login
+            if(!is_admin()) {
+                header('Location: /login');
             }
 
-            //eliminar el ponente y obtener el resultado bool
-            $resultado = $ponente->eliminar();
+            //obtiene el id del $_POST, enviado por el form,
+            //en el value del input oculto con name='id'
+            $id = $_POST['id'];
+
+            //obtener el evento por su id
+            $evento = Evento::find($id);
+
+            //si evento no ! esta declarado o no es diferente de null
+            if(!isset($evento)) {
+                //redirigir al panel de ponentes
+                header('Location: /admin/eventos');
+            }
+
+            //eliminar el evento y obtener el resultado bool
+            $resultado = $evento->eliminar();
 
             //si el resultado de eliminar es true
             if($resultado) {
                 //redirigir al panel de ponentes
-                header('Location: /admin/ponentes');
+                header('Location: /admin/eventos');
             }
         }
     }

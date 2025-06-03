@@ -47,6 +47,7 @@
                                 <i class="fa-solid fa-pencil"></i>
                                 Editar
                             </a>
+
                             <!-- formulario con button (permite icono), para eliminar -->
                             <form method="POST" action="/admin/eventos/eliminar" class="table__formulario">
                                 <input type="hidden" name="id" value="<?php echo $evento->id; ?>">
@@ -56,8 +57,6 @@
                                 </button>
                             </form>
                         </td>
-
-
                     </tr>
                 <?php } ?>
             </body>
