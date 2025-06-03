@@ -97,7 +97,7 @@
         </ul>
         
         <!-- para asignar el value del ponente seleccionado en el form, para guardar en la BD -->
-        <input type="hidden" name="ponente_id" value="">
+        <input type="hidden" name="ponente_id" value="<?php echo $evento->ponente_id; ?>">
     </div>
 
     <div class="formulario__campo">

@@ -47,7 +47,7 @@
 
                 //llama método que busca eventos según la categoria_id y el dia, consultando a la API,
                 //y a su vez obtiene las horas disponibles y ocupadas.
-                //el await hace que se ejecute completamente la función, antes de continuar con el código siguiente
+                //await hace que se ejecute completamente la función, antes de continuar con el código siguiente
                 await buscarEventos();
 
                 //obtiene el valor del value de inputHiddenHora y lo asigna a id

@@ -24,20 +24,59 @@
         //asigna un listener de evento tipo input y una función, al input
         ponentesInput.addEventListener('input', buscarPonentes );
 
-        //func que obtiene ponentes a través de la API
-        async function obtenerPonentes() {
-            
+
+        //comprueba si el value del input oculto ponenteHidden, tiene algún valor
+        if(ponenteHidden.value) {
+
+            //función IIFE que se autoejecuta, con una función anónima asyncrona, para poder usar await
+            (async() =>{
+                id = ponenteHidden.value;
+                //llama función para obtener el ponente, enviando el id
+                //await espera la respuesta de la función, antes de continuar con el código siguiente
+                const ponente = await obtenerPonente(id);
+                //deconstrucción de las propiedades nombre y apellido del objeto ponenete, en variables
+                const {nombre, apellido} = ponente;
+
+                //**Para insertar el ponente encontrado, en el HTML del DOM
+                //crea elemento html li
+                const ponenteDOM = document.createElement('LI');
+                //agregar clases al li
+                ponenteDOM.classList.add('listado-ponentes__ponente', 'listado-ponentes__ponente--seleccionado');
+                //agrega el valor de las variables, como texto al li
+                ponenteDOM.textContent = `${nombre} ${apellido}`;
+
+                //inserta el li, como hijo del ul de lisadoPonentes
+                listadoPonentes.appendChild(ponenteDOM);
+            })();
+
+        }
+
+        //obtiene ponentes a través de la API APIPonentes.php método index()
+        async function obtenerPonentes() { 
             //def url del endpoint de la API
             const url = `/api/ponentes`;
             //consulta con método fetch() a la API
             const respuesta = await fetch(url);
-            //obtiene la info .json, del resultado de la consulta, en un arreglo de objetos json
-            //obtiene todos los datos (columnas) de todos los clientes (registros)
+            //obtiene la info .json, de la respuesta de la consulta, en un arreglo de objetos json
+            //obtiene todos los datos (columnas) de todos los ponentes (registros)
             const resultado = await respuesta.json(); 
-            
             //llama función enviando el arreglo de objetos json resulado con toda la info
             formatearPonentes(resultado);  
         }
+
+        //obtiene ponente por su id, a través de la API APIPonentes.php método ponente()
+        async function obtenerPonente(id) { 
+            //def url al endpoint de la API enviando el id recibido como parámetro
+            const url = `/api/ponente?id=${id}`;
+            //consulta con método fetch() a la API en la url
+            const respuesta = await fetch(url);
+            //obtiene la info .json, de la respuesta de la consulta, en un arreglo de objetos json
+            //obtiene todos los datos (columnas) del ponente por su id
+            const resultado = await respuesta.json(); 
+            //retorna resultado
+            return resultado;
+        }
+
 
         //obtiene un nuevo arreglo solo con la info necesaria, a partir del arrayPonentes recibido
         function formatearPonentes(arrayPonentes = []) {
@@ -173,7 +212,6 @@
             //agrega el valor del atributo dataset ponenteId del ponente seleccionado, 
             // al atributo value del input poneneteHidden
             ponenteHidden.value = ponente.dataset.ponenteId
-
         }
     }
 

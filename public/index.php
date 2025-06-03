@@ -55,6 +55,7 @@ $router->post('/admin/eventos/eliminar', [EventosController::class, 'eliminar'])
 
 $router->get('/api/eventos-horario', [APIEventos::class, 'index']);
 $router->get('/api/ponentes', [APIPonentes::class, 'index']);
+$router->get('/api/ponente', [APIPonentes::class, 'ponente']);
 
 $router->get('/admin/registrados', [RegistradosController::class, 'index']);
 
