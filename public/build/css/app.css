@@ -355,9 +355,90 @@ h3 {
   text-align: center;
 }
 
+[class$=__descripcion] {
+  text-align: center;
+  font-size: 1.8rem;
+  font-weight: 300;
+  color: #1E293B;
+  margin-bottom: 5rem;
+}
+
 .auth {
   width: min(95%, 60rem);
   margin: 0 auto;
+}
+
+.devwebcamp__grid {
+  width: min(95%, 140rem);
+  margin: 0 auto;
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: repeat(1, 1fr);
+}
+@media (min-width: 768px) {
+  .devwebcamp__grid {
+    display: grid;
+    gap: 5rem;
+    grid-template-columns: repeat(2, 1fr);
+    align-items: center;
+  }
+}
+.devwebcamp__texto {
+  line-height: 1.5;
+}
+
+.precios__grid {
+  width: min(95%, 140rem);
+  margin: 0 auto;
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: repeat(1, 1fr);
+}
+@media (min-width: 768px) {
+  .precios__grid {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: repeat(3, 1fr);
+    align-items: flex-start;
+  }
+}
+
+.precio {
+  border: 1px solid #64748B;
+  padding: 2rem;
+}
+.precio__nombre {
+  font-size: 2.6rem;
+  margin: 2rem 0;
+}
+.precio:nth-child(2) {
+  order: -1;
+}
+@media (min-width: 768px) {
+  .precio:nth-child(2) {
+    order: unset;
+  }
+}
+.precio:nth-child(3) {
+  order: -1;
+}
+@media (min-width: 768px) {
+  .precio:nth-child(3) {
+    order: unset;
+  }
+}
+.precio__lista {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+  line-height: 1.5;
+}
+.precio__precio {
+  font-size: 4rem;
+  font-weight: 700;
+  margin: 3rem 0 0 0;
+  color: #007df4;
+  text-align: center;
 }
 
 .formulario {

@@ -20,9 +20,9 @@
     <div class="barra__contenido">
         <a href="/"><h3 class="barra__logo">&#60;CampusDevWeb /></h3></a>
         <nav class="navegacion">
-            <a href="/devwebcam" class="navegacion__enlace">Evento</a>
-            <a href="/paquetes" class="navegacion__enlace">Paquetes</a>
-            <a href="/workshops" class="navegacion__enlace">Workshops / Conferencias</a>
+            <a href="/campusdevweb" class="navegacion__enlace">Evento</a>
+            <a href="/precios" class="navegacion__enlace">Precios</a>
+            <a href="/talleres-conferencias" class="navegacion__enlace">Talleres / Conferencias</a>
             <a href="/registro" class="navegacion__enlace">Comprar Pase</a>
         </nav>
     </div>

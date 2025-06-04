@@ -10,6 +10,7 @@ use Controllers\EventosController;
 use Controllers\RegalosController;
 use Controllers\PonentesController;
 use Controllers\DashboardController;
+use Controllers\PaginasController;
 use Controllers\RegistradosController;
 
 $router = new Router();
@@ -60,6 +61,12 @@ $router->get('/api/ponente', [APIPonentes::class, 'ponente']);
 $router->get('/admin/registrados', [RegistradosController::class, 'index']);
 
 $router->get('/admin/regalos', [RegalosController::class, 'index']);
+
+//Área Pública
+$router->get('/', [PaginasController::class, 'index']);
+$router->get('/campusdevweb', [PaginasController::class, 'evento']);
+$router->get('/precios', [PaginasController::class, 'precios']);
+$router->get('/talleres-conferencias', [PaginasController::class, 'conferencias']);
 
 
 $router->comprobarRutas();

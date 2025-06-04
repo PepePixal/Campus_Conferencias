@@ -15,7 +15,6 @@
                 <!-- muestra el mensaje obtenido y asignado a la var $mensaje -->
                 <?php echo $mensaje; ?>
             </div>
-
 <?php
         } 
     }

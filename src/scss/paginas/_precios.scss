@@ -1,0 +1,55 @@
+@use 'base/mixins' as m;
+@use 'base/variables' as v;
+
+.precios {
+
+    &__grid {
+        @include m.contenedor;
+        @include m.grid(1, 3rem);
+        @include m.tablet {
+            @include m.grid(3, 3rem);
+            //cada columna ocupa la altura que necesite
+            align-items: flex-start;
+        }
+    }
+}
+
+.precio {
+    @include m.card;
+
+    //selecciona segundo elemento .precio
+    &:nth-child(2) {
+        //lo pone primero en el orden. En mobile
+        order: -1;
+
+        @include m.tablet {
+            //resetea al orden original
+            order: unset;
+        }
+    }
+    //selecciona tercer elemento .precio
+    &:nth-child(3) {
+        //lo pone segundo en el orden. En mobile
+        order: -1;
+
+        @include m.tablet {
+            //resetea al orden original
+            order: unset;
+        }
+    }
+
+
+
+    &__lista {
+        @include m.reset-lista;
+        line-height: 1.5;
+    }
+
+    &__precio{
+        font-size: 4rem;
+        font-weight: v.$bold ;
+        margin: 3rem 0 0 0;
+        color: v.$azul;
+        text-align: center;
+    }
+}
