@@ -1,0 +1,82 @@
+@use 'base/mixins' as m;
+@use 'base/variables' as v;
+
+.agenda {
+    @include m.contenedor;
+}
+
+.eventos{
+    //definición de variable
+    $modificador: &;
+
+    &__heading {
+        color: v.$azul;
+        margin: 5rem 0 3rem 0;
+        text-align: left;
+        font-size: clamp(2rem, -0.8rem + 8vw, 4rem);
+
+    }
+
+    &__fecha {
+        color: v.$gris;
+        margin: 3rem 0 1rem 0;
+    }
+
+    &--workshops {
+        //interpolación # de una var, con un string.
+        //Esto genera en la compilación app.css:
+        //.eventos--workshops .eventos__heading { } 
+        #{$modificador}__heading {
+            color: v.$secundario;
+        }
+    }
+}
+
+.evento {
+    &__hora {
+        font-weight: v.$bold;
+    }
+
+    &__informacion {
+        background-color: v.$azul;
+        border-radius: 1rem;
+        padding: 2rem;
+        color: v.$blanco;
+        transition: 300ms background-color ease;
+        &:hover {
+            background-color: v.$azul-oscuro;
+        }
+
+    }
+
+    &__introduccion {
+        //oculta el texto del párrafo,
+        //en mobile, a partir de las 4 lineas
+        display: -webkit-box;
+        -webkit-line-clamp: 4; 
+        -webkit-box-orient: vertical;
+        line-clamp: 2;
+        overflow: hidden;
+        @include m.tablet {
+             //en tablet y >, a partir de las 2 lineas
+            -webkit-line-clamp: 2;
+        }
+    }
+
+    &__autor-info {
+        display: flex;
+        gap: 2rem;
+        justify-content: space-between;
+        align-items: center;
+    }
+
+    &__imagen-autor {
+        width: 5rem;
+        background-color: v.$blanco;
+        border-radius: 50%;
+    }
+
+    &__autor-nombre {
+        font-weight: v.$bold;
+    }
+}

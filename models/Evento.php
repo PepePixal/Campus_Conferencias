@@ -14,6 +14,11 @@ class Evento extends ActiveRecord {
     public $dia_id;
     public $hora_id;
     public $ponente_id;
+    //agregadas para evitar el aviso DEPRECATED PHP 8.2
+    public $categoria;
+    public $dia;
+    public $hora;
+    public $ponente;
 
 
     public function __construct($args = [])
@@ -26,6 +31,11 @@ class Evento extends ActiveRecord {
         $this->dia_id = $args['dia_id'] ?? '';
         $this->hora_id = $args['hora_id'] ?? '';
         $this->ponente_id = $args['horaponente_id'] ?? '';
+        //agregadas para evitar el aviso DEPRECATED PHP 8.2
+        $this->categoria = $args['categoria'] ?? '';
+        $this->dia = $args['dia'] ?? '';
+        $this->hora = $args['hora'] ?? '';
+        $this->ponente = $args['ponente'] ?? '';
     }
 
     // Mensajes de validación para la creación de un evento

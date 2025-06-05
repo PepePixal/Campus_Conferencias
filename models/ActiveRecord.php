@@ -131,6 +131,13 @@ class ActiveRecord {
         $resultado = self::consultarSQL($query);
         return array_shift( $resultado ) ;
     }
+
+    // Retorna los registros oredenados según la $columna y en un $orden
+    public static function ordenar($columna, $orden) {
+        $query = "SELECT * FROM " . static::$tabla . " ORDER BY $columna $orden";
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
     
     // Busqueda Where según parámetros recibidos como arreglo
     public static function whereArray($array = []) {
