@@ -459,9 +459,15 @@ h3 {
 .eventos--workshops .eventos__heading {
   color: #00c8c2;
 }
+.eventos--workshops .evento__informacion {
+  background-color: #00c8c2;
+}
+.eventos--workshops .evento__informacion:hover {
+  background-color: #009994;
+}
 .eventos .swiper-button-next,
 .eventos .swiper-button-prev {
-  color: #FFFFFF;
+  color: rgba(255, 255, 255, 0.6);
 }
 
 .evento__hora {
@@ -477,11 +483,20 @@ h3 {
 .evento__informacion:hover {
   background-color: #0254a1;
 }
+.evento__nombre {
+  font-size: 2rem;
+  margin: 0;
+  display: -webkit-box;
+  -webkit-line-clamp: 1;
+  -webkit-box-orient: vertical;
+  line-clamp: 1;
+  overflow: hidden;
+}
 .evento__introduccion {
   display: -webkit-box;
   -webkit-line-clamp: 4;
   -webkit-box-orient: vertical;
-  line-clamp: 2;
+  line-clamp: 4;
   overflow: hidden;
 }
 @media (min-width: 768px) {
@@ -502,6 +517,41 @@ h3 {
 }
 .evento__autor-nombre {
   font-weight: 700;
+}
+
+.resumen {
+  background-image: linear-gradient(to right, rgba(0, 125, 244, 0.7), rgba(0, 125, 244, 0.9)), url(../img/bg_numeros.jpg);
+  background-image: linear-gradient(to right, rgba(0, 125, 244, 0.7), rgba(0, 125, 244, 0.9)), image-set(url("../img/bg_numeros.avif") 1x, url("../img/bg_numeros.webp") 1x, url("../img/bg_numeros.jpg") 1x);
+  background-size: cover;
+  background-position: center center; /* Centra la imagen horizontal y verticalmente */
+  padding: 8rem 10rem;
+}
+.resumen__grid {
+  width: min(95%, 140rem);
+  margin: 0 auto;
+  display: grid;
+  gap: 2rem;
+  grid-template-columns: repeat(1, 1fr);
+}
+@media (min-width: 768px) {
+  .resumen__grid {
+    display: grid;
+    gap: 5rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+.resumen__bloque {
+  text-align: center;
+  color: #FFFFFF;
+}
+.resumen__texto, .resumen__texto--numero {
+  font-weight: 700;
+  line-height: 1;
+  margin: 0;
+  font-size: 2.4rem;
+}
+.resumen__texto--numero {
+  font-size: 6rem;
 }
 
 .formulario {
@@ -686,15 +736,18 @@ h3 {
     justify-content: flex-end;
   }
 }
-.header__enlace {
+.header__enlace, .header__submit {
   all: unset;
   color: #FFFFFF;
   font-size: 1.5rem;
   text-transform: uppercase;
 }
-.header__enlace:hover {
+.header__enlace:hover, .header__submit:hover {
   color: #007df4;
   cursor: pointer;
+}
+.header__form {
+  display: flex;
 }
 .header__contenido {
   padding-top: 3rem;
@@ -812,7 +865,11 @@ h3 {
 }
 .navegacion__enlace {
   color: #FFFFFF;
-  padding: 2rem;
+  padding: 1.5rem;
+}
+.navegacion__enlace--actual {
+  background-color: #FFFFFF;
+  color: #007df4;
 }
 .navegacion__enlace:hover {
   background-color: #FFFFFF;

@@ -29,12 +29,18 @@
         #{$modificador}__heading {
             color: v.$secundario;
         }
-    }
 
+        .evento__informacion {
+            background-color: v.$secundario;
+            &:hover {
+                background-color: v.$secundario-oscuro;
+            }
+        }
+    }
 
     .swiper-button-next,
     .swiper-button-prev {
-        color: v.$blanco;
+        color: rgba(v.$blanco, .6);
     }
 
 }
@@ -50,19 +56,35 @@
         padding: 2rem;
         color: v.$blanco;
         transition: 300ms background-color ease;
+        //para tarjetas con el mismo tamaño:
+        // min-height: 250px;
+        // display: flex;
+        // flex-direction: column;
+        // justify-content: space-between;
         &:hover {
             background-color: v.$azul-oscuro;
         }
+    }
 
+    &__nombre {
+        font-size: 2rem;
+        margin: 0;
+        //oculta el texto del párrafo,
+        //a partir de las 1 linea ...
+        display: -webkit-box;
+        -webkit-line-clamp: 1; 
+        -webkit-box-orient: vertical;
+        line-clamp: 1;
+        overflow: hidden;
     }
 
     &__introduccion {
         //oculta el texto del párrafo,
-        //en mobile, a partir de las 4 lineas
+        //en mobile, a partir de las 4 lineas...
         display: -webkit-box;
         -webkit-line-clamp: 4; 
         -webkit-box-orient: vertical;
-        line-clamp: 2;
+        line-clamp: 4;
         overflow: hidden;
         @include m.tablet {
              //en tablet y >, a partir de las 2 lineas

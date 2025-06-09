@@ -189,7 +189,28 @@ class ActiveRecord {
         //extrae y retorna el prime valor del arreglo, la cantidad de registros
         return array_shift($total);
     }
+    
+    // Obtener la cantidad total de registros de una tabla, según columna y valor
+    public static function total_columna_valor($columna = '', $valor = '') {
+        //consulta SQL
+        $query = "SELECT COUNT(*) FROM " . static::$tabla;
 
+        if($columna) {
+            //agrega al query
+            $query .= " WHERE $columna = $valor";
+        }
+        //consulta dirécta a la DB, enviando el query SQL,
+        //si la conexión ha sido exitosa, retorna un objeto con info de la consulta
+        $resultado = self::$db->query($query);
+        
+        //procesa la info de $resultado y obtiene el resultado de la consulta
+        //como un arreglo asociativo o index,
+        //donde el el primer elemento es el número total de registros
+        $total = $resultado->fetch_array();
+        
+        //extrae y retorna el prime valor del arreglo, la cantidad de registros
+        return array_shift($total);
+    }
 
     // crea un nuevo registro
     public function crear() {

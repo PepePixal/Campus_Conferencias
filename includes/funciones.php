@@ -12,16 +12,19 @@ function s($html) : string {
 }
 
 //función que recibe una ruta $path y comprueba si el valor string de la ruta actual, 
-//obtenida de $_SERVER['PATH_INF], contiene el valor string de $path, recibido como argumento,
-//retorna un : bool: Si es que si ? retorna true (1), de lo contrario : retorna false (nada);
-function pagina_actual ($path) : bool{
-    return str_contains( $_SERVER['PATH_INFO'], $path) ? true : false;
+//en $_SERVER['PATH_INF] (si viene vacia le asigna '/'), contiene el valor string del parámetro $path,
+//si lo contiene ? retorna true (1), de lo contrario : retorna false (nada);
+function pagina_actual($path) : bool {
+    return str_contains($_SERVER['PATH_INFO'] ?? '/', $path ) ? true : false;
 }; 
 
 //comprueba si hay un usuario autenticado en la sesión. Retorna bool
 function is_auth() : bool {
-    //inicia sesión
-    session_start();
+    //valida si no hay una sesión iniciada
+    if(!isset($_SESSION)) {
+        //inicia sesión
+        session_start();
+    }
     //comprueba si el elemento 'nombre' es diferente a null y no está vacio,
     //retorna true o false
     return isset($_SESSION['nombre']) && !empty($_SESSION);
