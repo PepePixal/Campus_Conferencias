@@ -133,7 +133,7 @@
         //cuya clase incluya __enlace (los iconos)
         &::before {
             color: $color;
-            size: $size;
+            font-size: $size;
             display: inline-block;
             font-style: normal;
             //aplica a los iconos vectoriales
@@ -146,22 +146,22 @@
         //selecciona elemento cuya clase contiene __enlace y
         //(&) su href contiene "https://facebook.com", 
         //antes del elemento inserta el icono 
-        &[href*="https://facebook.com"]::before {
+        &[href*="facebook.com"]::before {
             content: "\f39e";
         }
-        &[href*="https://github.com"]::before {
+        &[href*="github.com"]::before {
             content: "\f09b";
         }
-        &[href*="https://tiktok.com"]::before {
+        &[href*="tiktok.com"]::before {
             content: "\e07b";
         }
-        &[href*="https://instagram.com"]::before {
+        &[href*="instagram.com"]::before {
             content: "\f16d";
         }
-        &[href*="https://youtube.com"]::before {
+        &[href*="youtube.com"]::before {
             content: "\f167";
         }
-        &[href*="https://twitter.com"]::before {
+        &[href*="twitter.com"]::before {
             content: "\f099";
         }
     }
