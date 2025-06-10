@@ -41,3 +41,12 @@ function is_admin() : bool {
     return isset($_SESSION['admin']) && !empty($_SESSION['admin']);
 }
 
+//Retorna el nombre de una animación aleatória, de la librería AOS
+function aos_animacion() : void {
+    //arreglo con algunas posibles animaciones de AOS
+    $efectos = ['fade-up', 'fade-down', 'fade-left', 'fade-right', 'flip-left', 'flip-right', 'zoom-in', 'zoom-in-up', 'zoom-in-down', 'zoom-out'];
+    //toma una (1) posición aleatória del arreglo indexado y la asigna a $efecto
+    $efecto = array_rand($efectos, 1);
+    //pinta el nombre del atributo para la animación y el valor string de la posición random obtenida
+    echo ' data-aos="' . $efectos[$efecto] . '" ';  //data-aos="fade-right"
+}
