@@ -577,11 +577,11 @@ h3 {
 }
 
 .speaker {
-  border: 1px solid #64748B;
-  padding: 2rem;
   background-position: center top;
   background-size: 350px;
   background-repeat: no-repeat;
+  border: 1px solid #64748B;
+  padding: 2rem;
 }
 .speaker__nombre {
   font-size: 2.6rem;
@@ -664,6 +664,20 @@ h3 {
 }
 .speaker-sociales__ocultar {
   display: none;
+}
+
+.mapa {
+  height: 45rem;
+  margin-top: 5rem;
+}
+.mapa__heading {
+  font-size: 2rem;
+  margin: 1rem;
+}
+.mapa__texto {
+  font-size: 1.5rem;
+  margin: 0 0 0 0;
+  text-align: center;
 }
 
 .formulario {

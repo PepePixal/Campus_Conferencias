@@ -16,11 +16,10 @@
 }
 
 .speaker {
-    @include m.card;
     background-position: center top;
     background-size: 350px;
     background-repeat: no-repeat;
-
+    @include m.card;
     //con SASS podemos usar un @for,
     //prara el indice $i desde 1 hasta 4
     @for $i from 1 through 4 {
@@ -32,9 +31,10 @@
                 url('../img/bg_#{$i}.avif') 1x,
                 url('../img/bg_#{$i}.webp') 1x,
                 url('../img/bg_#{$i}.png') 1x,
-            );
-        }
+                );
+            }
     }
+        
 
     &__imagen {
         min-width: 350px;
@@ -52,15 +52,14 @@
 
     &__listado-skills {
         @include m.tags;
-
     }
 }
 
 .speaker-sociales {
-    //requiere color y tamaño
-    @include m.menu-social(v.$negro, 3rem);
     display: flex;
     gap: 2rem;
     margin-top: 2rem;
+    //requiere color y tamaño
+    @include m.menu-social(v.$negro, 3rem);
 }
 
