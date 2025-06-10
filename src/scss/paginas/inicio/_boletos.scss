@@ -1,0 +1,95 @@
+@use 'base/mixins' as m;
+@use 'base/variables' as v;
+
+.boletos {
+    &__grid {
+        @include m.contenedor-sm;
+        @include m.grid(1, 5rem);
+    }
+}
+
+.boleto {
+    //ancho mínimo 100% - 5rem, máximo 65rem
+    width: min(100% - 5rem, 65rem);
+    //centrado horizontalmente
+    margin: 0 auto;
+    padding: 6rem;
+    border-radius: 2rem;
+    color: v.$blanco;
+    //relative para poder poner absolute despues
+    position: relative;
+
+    //**agujeros de los tickets.
+    //crea elementos primer hijo y último hijo dentro de .boleto
+    &::before,
+    &::after {
+        //requiere position relative en el elemento anterior
+        position: absolute;
+        //before y after, requieren un content
+        content: '';
+        background-color: v.$blanco;
+        width: 5rem;
+        height: 5rem;
+        //posiciona los dos elementos verticalmente
+        top: calc(50% - 2.5rem);
+    }
+    //aplica solo al primer elemento
+    &::before {
+        //genera circulo radio 50% recortado at 25% 50%
+        clip-path: circle(50% at 25% 50%);
+        //posición absolute a partir de la izquierda
+        left: 0;
+    }
+    //aplica solo al segundo elemento
+    &::after {
+        //genera circulo radio 50% recortado at 75% 50%
+        clip-path: circle(50% at 75% 50%);
+        //posición absolute a partir de la derecha
+        right: 0;
+    }
+
+    &--presencial {
+        //fondo diseñado con https://www.csshero.org/mesher/
+        background-color:hsla(178,100%,39%,1);
+        background-image:
+        radial-gradient(at 37% 28%, hsla(212,100%,47%,1) 0px, transparent 50%),
+        radial-gradient(at 17% 24%, hsla(181,100%,39%,1) 0px, transparent 50%),
+        radial-gradient(at 68% 72%, hsla(212,100%,47%,1) 0px, transparent 50%),
+        radial-gradient(at 85% 70%, hsla(181,100%,39%,1) 0px, transparent 50%),
+        radial-gradient(at 16% 61%, hsla(212,100%,47%,1) 0px, transparent 50%),
+        radial-gradient(at 58% 12%, hsla(181,100%,39%,1) 0px, transparent 50%),
+        radial-gradient(at 87% 24%, hsla(212,100%,47%,1) 0px, transparent 50%);
+    }
+    &--virtual {
+        background-color: v.$secundario;
+    }
+    &--gratis {
+        background-color: v.$azul;
+    }
+
+    &__logo {
+        @include m.logo;
+        @include m.texto-fluido(2rem, 4rem);
+        margin: 0;
+    }
+    &__plan {
+        font-size: 2rem;
+        text-transform: uppercase;
+        margin: 3rem 0 0 0;
+    }
+    &__precio {
+        margin: 3rem 0 0 0;
+        font-weight: v.$blanco;
+        font-size: 4rem;
+    }
+
+    &__enlace-contenedor {
+        margin-top: 5rem;
+        display: flex;
+        justify-content: center;
+    }
+    &__enlace {
+        @include m.boton(v.$azul, v.$blanco);
+        width: auto;
+    }
+}
