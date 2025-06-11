@@ -68,5 +68,6 @@ $router->get('/campusdevweb', [PaginasController::class, 'evento']);
 $router->get('/precios', [PaginasController::class, 'precios']);
 $router->get('/talleres-conferencias', [PaginasController::class, 'conferencias']);
 
+$router->get('/404', [PaginasController::class, 'error']);
 
 $router->comprobarRutas();

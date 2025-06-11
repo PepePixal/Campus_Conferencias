@@ -723,10 +723,10 @@ h3 {
   background-color: #007df4;
 }
 .boleto__logo {
+  margin: 0;
   color: #FFFFFF;
   text-align: center;
   margin-bottom: 2rem;
-  margin: 0;
 }
 @media (min-width: 1024px) {
   .boleto__logo {
@@ -769,6 +769,13 @@ h3 {
 .boleto__enlace:hover {
   background-color: rgb(0, 98.8729508197, 193);
   cursor: pointer;
+}
+
+.pagina_404__contenedor {
+  text-align: center;
+}
+.pagina_404__enlace {
+  color: #007df4;
 }
 
 .formulario {
