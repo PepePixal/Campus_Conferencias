@@ -20,7 +20,7 @@
     position: relative;
 
     //**agujeros de los tickets.
-    //crea elementos primer hijo y último hijo dentro de .boleto
+    //aplica antes y despues del elemento padre
     &::before,
     &::after {
         //requiere position relative en el elemento anterior
@@ -33,14 +33,14 @@
         //posiciona los dos elementos verticalmente
         top: calc(50% - 2.5rem);
     }
-    //aplica solo al primer elemento
+    //aplica antes del elemento padre
     &::before {
         //genera circulo radio 50% recortado at 25% 50%
         clip-path: circle(50% at 25% 50%);
         //posición absolute a partir de la izquierda
         left: 0;
     }
-    //aplica solo al segundo elemento
+    //aplica despues del elemento padre
     &::after {
         //genera circulo radio 50% recortado at 75% 50%
         clip-path: circle(50% at 75% 50%);
@@ -92,4 +92,94 @@
         @include m.boton(v.$azul, v.$blanco);
         width: auto;
     }
+
+
+    //** Boleto justificante inscripción:
+
+    //asigna selector padre (&) a la var $modificador
+    $modificador: &;
+
+    &--acceso {
+        width: 30rem;
+        height: 50rem;
+        padding: 10rem 3rem;
+
+        @include m.tablet {
+            width: 60rem;
+            height: 30rem;
+            padding: 6rem;
+            display: flex;
+            flex-direction: column;
+            justify-content: center;
+        }
+
+        //la var modificador contiene el elemento padre (--acceso)
+        #{$modificador}__logo {
+            margin: 0;
+            text-align: left;
+            @include m.texto-fluido(2rem, 2.5rem);
+        }
+        
+        //la var modificador contiene el elemento padre (--acceso)
+        #{$modificador}__nombre {
+            font-size: 2.4rem;
+            text-transform: uppercase;
+            font-weight: v.$black;
+        }
+        
+        //la var modificador contiene el elemento padre (--acceso)
+        #{$modificador}__codigo {
+            font-size: 3.5rem;
+            font-weight: v.$bold;
+            text-align: center;
+            position: absolute;
+            bottom: 7rem;
+            margin: 0;
+            left: 0;
+            width: 100%;
+
+            @include m.tablet {
+                rotate: 90deg;
+                //resetea el posicionamiento tras rotate
+                transform-origin: 0 0;
+                width: 30rem;
+                top: 0;
+                left: calc(100% - 5rem);
+            }
+        }
+    }
+
+    //aplica antes del elemento padre
+    &::before {
+        //genera circulo radio 50% recortado at 50% 25%
+        clip-path: circle(50% at 50% 25%);
+        //posiciones absolutas, desde la izquierda y arriba
+        left: calc(50% - 2.5rem);
+        top: 0;
+
+        @include m.tablet {
+            //genera circulo radio 50% recortado at 25% 50%
+            clip-path: circle(50% at 25% 50%);
+            //posición absolute a partir de la izquierda
+            left: 0;
+            top: calc(50% - 2.5rem);
+        }
+    }
+    //aplica despues del elemento padre
+    &::after {
+        //genera circulo radio 50% recortado at 50% 75%
+        clip-path: circle(50% at 50% 75%);
+        //posiciones absolutas, desde la izquierda y arriba
+        left: calc(50% - 2.5rem);
+        top: calc(100% - 5rem);
+
+        @include m.tablet {
+            //genera circulo radio 50% recortado at 75% 50%
+            clip-path: circle(50% at 75% 50%);
+            //posición absolute a partir de la derecha
+            left: calc(100% - 5rem);
+            top: calc(50% - 2.5rem);
+        }
+    }
+
 }

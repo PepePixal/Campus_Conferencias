@@ -12,6 +12,21 @@ class RegistroController {
 
     public static function crear(Router $router) {
 
+        //valida si el usuario NO está autenticado o logueado
+        if(!is_auth()) {
+            //redirige al usuario al inicio
+            header('Location: /');
+        }
+
+        //Verificar si el id del usuario ya esta registrado en algún evento.
+        //busca el id del usuario logueado, en la columna usario_id de la tabla registros 
+        $registro = Registro::where('usuario_id', $_SESSION['id']);
+        //Si el registro existe y el id del paquete registraso es "3" (gratis):
+        if(isset($registro) && $registro->paquete_id === "3") {
+            //redirige al usuario a la URL boleto con su id = token, que muestra su ticket
+            header('Location: /boleto?id=' . urlencode($registro->token));
+        }
+
         //llamar render enviando el archivo para la vista y datos
         $router->render('registro/crear', [
             'titulo' => 'Finalizar Registro al Campus',
@@ -19,45 +34,54 @@ class RegistroController {
     }
 
     //método para la inscripción de usuarios registrados, al plan gratuito
-    public static function gratis(Router $router) {
+    public static function gratis() {
         
-      if($_SERVER['REQUEST_METHOD'] === 'POST') {
-        //verifica si el usuario NO está registrado o logueado
-        if(!is_auth()) {
-            //redirige al usuario
-            header('Location: /login');
-        }
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            //verifica si el usuario NO está registrado o logueado
+            if(!is_auth()) {
+                //redirige al usuario
+                header('Location: /login');
+            }
 
-        //genera token random unico con md5(...),
-        //sustrae del caracter 0 al 8 y lo asigna a $token
-        $token = substr( md5(uniqid( rand(), true )), 0, 8);
+            //Verificar si el id del usuario ya esta registrado en algún evento.
+            //busca el id del usuario logueado, en la columna usario_id de la tabla registros 
+            $registro = Registro::where('usuario_id', $_SESSION['id']);
+            //Si el registro existe y el id del paquete registraso es "3" (gratis):
+            if(isset($registro) && $registro->paquete_id === "3") {
+                //redirige al usuario a la URL boleto con su id = token, que muestra su ticket
+                header('Location: /boleto?id=' . urlencode($registro->token));
+            }
 
-        //**Crear registro para almacenar en la BD
-        //define arreglo asociativo según Active Model y asignando datos
-        $datos = array(
-            //3 es el id del paquete gratis
-            'paquete_id' => 3,
-            //el paquete gratis no requiere pago
-            'pago_id' => '',
-            'token' => $token,
-            //obtiene el id del usuario de la sesión abierta al loguearse
-            'usuario_id' => $_SESSION['id']
-        );
+            //genera token random unico con md5(...),
+            //sustrae del caracter 0 al 8 y lo asigna a $token
+            $token = substr( md5(uniqid( rand(), true )), 0, 8);
 
-        //instancia y sincroniza el objeto del modelo Registro, con los $datos
-        $registro = new Registro($datos);
-        //gurada los datos del objeto del modelo $registro (Active Model), en la BD
-        $resultado = $registro->guardar();
-        //valida si hay resultado y no es false
-        if($resultado) {
-            //redirecciona al usuario, a la url /boleto con ?id= al token generado para el registro
-            //la func php urlencode() toma el string y lo convierte en un formato seguro para URL
-            header('Location: /boleto?id=' . urlencode($registro->token));
-        } 
-      };
+            //**Crear registro para almacenar en la BD
+            //define arreglo asociativo según Active Model y asignando datos
+            $datos = array(
+                //3 es el id del paquete gratis
+                'paquete_id' => 3,
+                //el paquete gratis no requiere pago
+                'pago_id' => '',
+                'token' => $token,
+                //obtiene el id del usuario de la sesión abierta al loguearse
+                'usuario_id' => $_SESSION['id']
+            );
+
+            //instancia y sincroniza el objeto del modelo Registro, con los $datos
+            $registro = new Registro($datos);
+            //gurada los datos del objeto del modelo $registro (Active Model), en la BD
+            $resultado = $registro->guardar();
+            //valida si hay resultado y no es false
+            if($resultado) {
+                //redirecciona al usuario, a la url /boleto con ?id= al token generado para el registro
+                //la func php urlencode() toma el string y lo convierte en un formato seguro para URL
+                header('Location: /boleto?id=' . urlencode($registro->token));
+            } 
+        };
     }
 
-     public static function boleto(Router $router) {
+    public static function boleto(Router $router) {
 
         //** Validar la URL y su id
         //obtiene el id (token) de la URL, en $_GET
