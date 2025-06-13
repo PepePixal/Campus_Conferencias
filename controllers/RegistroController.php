@@ -119,4 +119,53 @@ class RegistroController {
             'registro' => $registro
         ]);
     }
+
+    //método para guardar en la DB, el registro a alguno de los planes de pago
+    public static function pagar(Router $router) {
+        
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+
+            //verifica si el usuario NO está registrado o logueado
+            if(!is_auth()) {
+                //redirige al usuario
+                header('Location: /login');
+            }
+
+            //Valiar si POST, del fetch() POST de Paypal, viene vacio
+            if(empty($_POST)) {
+                //pinta un json vacio, retorna el código y se para
+                echo json_encode([]);
+                return;
+            }
+
+            //**Crear registro en la tabla registros de la BD
+
+            //genera token random unico con md5(...),
+            //sustrae del caracter 0 al 8 y lo asigna a $token
+            $token = substr( md5(uniqid( rand(), true )), 0, 8);
+
+            //define y asigna a $datos, el arreglo recibido en $_POST, del fetch de paypal
+            $datos = $_POST;
+            //agrega la llave 'token' y el valor de $token, al arreglo $datos
+            $datos['token'] = $token;
+            //agrega la llave 'usuario_id' y el valor del id del usuario logueado
+            $datos['usuario_id'] = $_SESSION['id'];
+     
+            try {
+                //instancia y sincroniza el objeto del modelo Registro, con los $datos
+                $registro = new Registro($datos);
+                //gurada los datos del objeto del modelo $registro (Active Model), en la BD
+                $resultado = $registro->guardar();
+                //retorna objeto json, a la consulta fetch() de Paypal
+                echo json_encode($resultado);
+
+           } catch (\Throwable $th) {
+                echo json_encode([
+                    'resultado' => 'error'
+                ]);
+           }
+
+        };
+    }
+
 }
