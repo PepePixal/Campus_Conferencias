@@ -27,12 +27,14 @@
             </ul>
             <p class="precio__precio">199 €</p>
 
-            <div id="paypal-container-VGMWQ5PTXFMPG"></div>
-            <script>
-                paypal.HostedButtons({
-                    hostedButtonId: "VGMWQ5PTXFMPG",
-                }).render("#paypal-container-VGMWQ5PTXFMPG")
-            </script>
+
+            <!-- PAYPAL botones apilados Versión Curso-->
+            <div id="smart-button-container">
+                <div style="text-align: center;">
+                    <div id="paypal-button-container"></div>
+                </div>
+            </div>
+
 
         </div>
 
@@ -46,6 +48,7 @@
             </ul>
             <p class="precio__precio">49 €</p>
 
+            <!-- PayPal Botón único de pago -->
             <style>.pp-VGMWQ5PTXFMPG{text-align:center;border:none;border-radius:0.25rem;min-width:15rem;padding:0 2rem;height:3.125rem;font-weight:bold;background-color:#007df4;color:#FFFFFF;font-family:"Helvetica Neue",Arial,sans-serif;font-size:1.125rem;line-height:1.5rem;cursor:pointer;}</style>
             <form action="https://www.sandbox.paypal.com/ncp/payment/VGMWQ5PTXFMPG" method="post" target="_blank" style="display:inline-grid;justify-items:center;align-content:start;gap:0.5rem;">
                 <input class="pp-VGMWQ5PTXFMPG" type="submit" value="Pagar ahora" />
@@ -55,5 +58,49 @@
 
         </div>
     </div>
-
 </main>
+
+<!-- Paypal modelo Botones Apilados - TEST -->
+<!-- Reemplazar CLIENT_ID por tu client id proporcionado al crear la app desde el developer dashboard) -->
+<script src="https://www.paypal.com/sdk/js?client-id=AffZ5RgtNH8TXe8Gbn_9XMgYNwqc09wYEBWaaGk6FbGpp8g-4b3nA0-xq7vU61sKXqDWGnEgjuQaVv0P&enable-funding=venmo&currency=EUR" data-sdk-integration-source="button-factory"></script>
+ 
+<script>
+    function initPayPalButton() {
+      paypal.Buttons({
+        style: {
+          shape: 'rect',
+          color: 'blue',
+          layout: 'vertical',
+          label: 'pay',
+        },
+ 
+        createOrder: function(data, actions) {
+          return actions.order.create({
+            purchase_units: [{"description":"1","amount":{"currency_code":"EUR","value":199}}]
+          });
+        },
+ 
+        onApprove: function(data, actions) {
+          return actions.order.capture().then(function(orderData) {
+ 
+            // Full available details
+            console.log('Capture result', orderData, JSON.stringify(orderData, null, 2));
+ 
+            // Show a success message within this page, e.g.
+            const element = document.getElementById('paypal-button-container');
+            element.innerHTML = '';
+            element.innerHTML = '<h3>Thank you for your payment!</h3>';
+ 
+            // Or go to another URL:  actions.redirect('thank_you.html');
+            
+          });
+        },
+ 
+        onError: function(err) {
+          console.log(err);
+        }
+      }).render('#paypal-button-container');
+    }
+ 
+  initPayPalButton();
+</script>

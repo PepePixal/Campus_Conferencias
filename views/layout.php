@@ -19,10 +19,8 @@
     rel="stylesheet"
     href="https://cdn.jsdelivr.net/npm/swiper@11/swiper-bundle.min.css"
     />
-
-    <script 
-        src="https://sandbox.paypal.com/sdk/js?client-id=BAAeC1xagderDOLFyjevSAQ4l2o6VxvT2Cqo5WePgr3UFqPQWMvGJ09P-zECXs6Omef1AgfrWRagrvXbeA&components=hosted-buttons&disable-funding=venmo&currency=EUR">
-    </script>
+    <!-- ayPal - scripts para botones apilados -->
+    
 
 </head>
 <body>
