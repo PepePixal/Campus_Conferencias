@@ -108,4 +108,15 @@
     &__autor-nombre {
         font-weight: v.$bold;
     }
+
+    //al botón para el registro del evento
+    &__agregar {
+        margin-top: 1rem;
+        @include m.boton(v.$blanco, v.$negro);
+        
+        &:disabled {
+            opacity: .5;
+            cursor: not-allowed;
+        }
+    }
 }

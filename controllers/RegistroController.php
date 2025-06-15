@@ -2,10 +2,15 @@
 
 namespace Controllers;
 
+use Model\Dia;
+use Model\Hora;
 use MVC\Router;
+use Model\Evento;
 use Model\Paquete;
+use Model\Ponente;
 use Model\Usuario;
 use Model\Registro;
+use Model\Categoria;
 
 
 class RegistroController {
@@ -167,5 +172,87 @@ class RegistroController {
 
         };
     }
+
+    //método para elegir conferencias para los usuarios con Paquete Presencial
+    public static function conferencias(Router $router) {
+
+        //comprobar si el usuario no está autenticado
+        if(!is_auth()) {
+            header('Location: /login');
+        }
+
+        //**validar que el usuario logueado tenga registrado un Paquete Presencial
+        //obtiene el id del usuario logueado y lo asigna
+        $usuario_id = $_SESSION['id'];
+        //busaca el usuario en la columna usuario_id, en tabla registros
+        $registro = Registro::where('usuario_id', $usuario_id);
+
+        //valida si el paquete registrado por el usuario NO es 1 (Presencial)
+        if($registro->paquete_id !== "1") {
+            //redireccióna a inicio
+            header('Location: /');
+        }
+
+        
+        //ordenar() obtiene TODOS los eventos ordenados, 
+        //según columna y tipo de ordenación. Requiere columna y orden
+        $eventos = Evento::ordenar('hora_id', 'ASC');
+
+        //define var tipo arreglo, vacio
+        $eventos_formateados = [];
+
+        //itera los $eventos y por cada objeto $evento:
+        foreach($eventos as $evento) {
+            
+            //asignar, a cada objeto $evento, nuevas propiedades, con los valores
+            //buscados en las diferentes tablas enlazadas
+            $evento->categoria = Categoria::find($evento->categoria_id);
+            $evento->dia = Dia::find($evento->dia_id);
+            $evento->hora = Hora::find($evento->hora_id);
+            $evento->ponente = Ponente::find($evento->ponente_id);
+            
+            //**Agrupar los eventos por categoría y día */
+            //si la propiedad categoria_id del obejeto $evento, es = 1 (Conferencia) y
+            //la propiedad dia_id, es = 1 (Viernes)
+            if($evento->categoria_id === "1" & $evento->dia_id === "1") {
+                // agrega el $evento (Conferencia Viernes) en 
+                // la llave ['conferencias_v'] del agrreglo $eventos_formateados
+                $eventos_formateados['conferencias_v'][] = $evento;
+            }
+
+            //si la propiedad categoria_id del obejeto $evento, es = 1 (Conferencia) y
+            //la propiedad dia_id, es = 2 (Sábado)
+            if($evento->categoria_id === "1" & $evento->dia_id === "2") {
+                // agrega el $evento (Conferencia Sabado) en 
+                // la llave ['conferencias_s'] del agrreglo $eventos_formateados
+                $eventos_formateados['conferencias_s'][] = $evento;
+            }
+
+            //si la propiedad categoria_id del obejeto $evento, es = 2 (Workshop) y
+            //la propiedad dia_id, es = 1 (Viernes)
+            if($evento->categoria_id === "2" & $evento->dia_id === "1") {
+                // agrega el $evento (Workshop Viernes) en 
+                // la llave ['workshops_v'] del agrreglo $eventos_formateados
+                $eventos_formateados['workshops_v'][] = $evento;
+            }
+
+            //si la propiedad categoria_id del obejeto $evento, es = 2 (Workshop) y
+            //la propiedad dia_id, es = 2 (Sábado)
+            if($evento->categoria_id === "2" & $evento->dia_id === "2") {
+                // agrega el $evento (Workshop Sábado) en 
+                // la llave ['workshops_s'] del agrreglo $eventos_formateados
+                $eventos_formateados['workshops_s'][] = $evento;
+            }
+        }
+
+
+        //llamar render enviando el archivo para la vista y datos
+        $router->render('registro/conferencias', [
+            'titulo' => 'Elige Talleres y Conferencias',
+            'eventos' => $eventos_formateados
+        ]);
+    }
+
+
 
 }
