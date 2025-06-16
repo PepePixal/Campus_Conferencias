@@ -6,10 +6,13 @@
     @include m.tablet {
         display: flex;
         gap: 2rem;
+        //para que funcione el sticky de registro
+        align-items: flex-start;
     }
     
     &__listado {
         @include m.tablet {
+            //ocupa 60%
             flex: 0 0 60%;
         }
     }
@@ -22,18 +25,69 @@
     }
 
     &__heading {
-        &--conferencias {
-            color: v.$azul;
-            //para que no se rompa el texto en el espacio en blanco
+        &--conferencias,
+        &--workshops {
+             //para que no se rompa el texto en el espacio en blanco
             white-space: nowrap;
             @include m.texto-fluido(2rem, 4rem);
         }
+
+        &--conferencias {
+            color: v.$azul; 
+        }
+        &--workshops {
+            color: v.$secundario;
+            margin-top: 5rem;
+        }
+    }
+
+    &__fecha {
+        margin: 5rem 0 2rem 0;
+        border-bottom: 1px solid v.$gris;
     }
 }
 
 //para el aside
 .registro {
+    background-color: v.$gris-claro;
+    padding: 2rem;
+    border-radius: 1rem;
      @include m.tablet {
+            //ocupa 40% aside derecha
             flex: 0 0 40%;
+            //para que quede fijo cuando scroll
+            position: -webkit-sticky;
+            position: sticky;
+            top: 0rem;
+    }
+
+    &__heading {
+        margin: 2rem 0 2rem 0;
+    }
+
+    &__evento {
+        display: flex;
+        justify-content: space-between;
+        align-items: center;
+        padding: 1rem;
+        //selecciona los elementos hijos pares
+        &:nth-child(even) {
+            background-color: v.$blanco;
         }
+    }
+
+    &__nombre {
+        font-size: 2rem;
+        font-weight: v.$bold;
+        margin: 0;
+    }
+
+    &__eliminar {
+        //quitar todos los estilos
+        all: unset;
+        color: v.$rojo;
+        &:hover {
+            cursor: pointer;
+        }
+    }
 }
