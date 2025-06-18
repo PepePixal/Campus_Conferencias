@@ -157,13 +157,13 @@ import Swal from 'sweetalert2';
                     icon: 'error',
                     confirmButtonText: 'OK'
                 })
-                //parar el código
+                //para el código aquí
                 return;
             }
 
             //genera un objeto tipo FormData Prototype, para el envio con fetch POST
             const datos = new FormData();
-            //agrega los id de los eventos y el regalo, seleccionados
+            //agrega los id de los eventos y el regalo, seleccionados, al arreglo datos
             datos.append('eventos', eventosId);
             datos.append('regalo_id', regaloId);
 

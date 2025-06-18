@@ -252,9 +252,67 @@ class RegistroController {
         // Manejo del registro de eventos mediante el $_POST
         //si el método de la consulta al server es tipo POST
         if($_SERVER['REQUEST_METHOD'] === 'POST') {
-            debuguear($_POST);
-        }
 
+            //comprobar si el usuario no está autenticado
+            if(!is_auth()) {
+                header('Location: /login');
+            }
+
+            //['eventos'] contiene una cadena de strigs separados por comas,
+            //con los id de los eventos registrados. Requerimos separarlos y guardarlos
+            //en un arreglo para poder acceder a los id de los eventos, por separado
+            $eventos = explode(',', $_POST['eventos']);
+
+            //valida si eventos está vacio
+            if(empty($eventos)) {
+                echo json_encode(['resultado' => false]);
+                //retorna respuesta y para el código aquí
+                return;
+            }
+
+            // Obtener el registro de usuario de la tabla, enviando columna y id
+            $registro = Registro::where('usuario_id', $_SESSION['id']);
+
+            //valida si NO existe $registro y NO es diferente de null ó ||
+            //el valor de paquete_id en $registro, NO es igual a 1 (Presencial)
+            if(!isset($registro) || $registro->paquete_id !== "1") {
+                //retorna json con resultado false y para el código
+                echo json_encode(['resultado' => false]);
+                return;
+            }
+            
+            //define arreglo para almacenar los eventos existentes y con disponibilidad
+            $eventos_array = [];
+
+            //** Validar la disponibilidad de cada uno de los eventos seleccionados.
+            //Iterea el arreglo $eventos con los id de los eventos seleccionados y por cada evento_id
+            foreach($eventos as $evento_id) {
+                //busca el evento por su id, en la tabla eventos, de la DB
+                $evento = Evento::find($evento_id);
+
+                //valida si el evento NO existe o || la cantidad de eventos disponibles es = "0"
+                if(!isset($evento) || $evento->disponibles === "0") {
+                    //retorna json con resultado false y para el código
+                    echo json_encode(['resultado' => false]);
+                    return;
+                }
+
+                //agrega cada evento validado (objeto), al arreglo
+                $eventos_array[] = $evento;
+            }
+
+            //Iterea el arreglo de objetos $eventos_array eventos seleccionados y validados
+            // y por cada objeto $evento:
+            foreach($eventos_array as $evento) {
+                //a la cantida de eventos disponibles de cada evento, le resta uno
+                $evento->disponibles -= 1;
+                //guardar todo el evento en la BD con la nueva cantidad de disponibles
+                $evento->guardar();
+
+                //Almacenar el registro de eventos seleccionados y regalo
+                
+            }
+        }
 
         //llamar render enviando el archivo para la vista y datos
         $router->render('registro/conferencias', [
@@ -263,7 +321,5 @@ class RegistroController {
             'regalos' => $regalos
         ]);
     }
-
-
 
 }
