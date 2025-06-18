@@ -6,6 +6,7 @@ use Model\Dia;
 use Model\Hora;
 use MVC\Router;
 use Model\Evento;
+use Model\Regalo;
 use Model\Paquete;
 use Model\Ponente;
 use Model\Usuario;
@@ -245,11 +246,21 @@ class RegistroController {
             }
         }
 
+        //obtiene todos los regalos en orden ASC, para pasarlos al render
+        $regalos = Regalo::all('ASC');
+
+        // Manejo del registro de eventos mediante el $_POST
+        //si el método de la consulta al server es tipo POST
+        if($_SERVER['REQUEST_METHOD'] === 'POST') {
+            debuguear($_POST);
+        }
+
 
         //llamar render enviando el archivo para la vista y datos
         $router->render('registro/conferencias', [
             'titulo' => 'Elige Talleres y Conferencias',
-            'eventos' => $eventos_formateados
+            'eventos' => $eventos_formateados,
+            'regalos' => $regalos
         ]);
     }
 

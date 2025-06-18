@@ -996,7 +996,7 @@ h3 {
     width: auto;
     align-self: flex-start;
   }
-  .formulario__submit--registrar {
+  .formulario__submit--registrar, .formulario__submit--full {
     width: 100%;
   }
 }
@@ -1652,13 +1652,14 @@ h3 {
   justify-content: space-between;
   align-items: center;
   padding: 1rem;
+  border-radius: 0.5rem;
 }
 .registro__evento:nth-child(even) {
   background-color: #FFFFFF;
 }
 .registro__nombre {
-  font-size: 2rem;
-  font-weight: 700;
+  font-size: 1.8rem;
+  font-weight: 400;
   margin: 0;
 }
 .registro__eliminar {
@@ -1667,5 +1668,26 @@ h3 {
 }
 .registro__eliminar:hover {
   cursor: pointer;
+}
+.registro__texto {
+  text-align: center;
+}
+.registro__regalo {
+  margin-top: 3rem;
+}
+.registro__label {
+  display: block;
+  font-size: 2.2rem;
+  color: #64748B;
+  font-weight: 700;
+  text-align: center;
+  margin-bottom: 1rem;
+}
+.registro__select {
+  width: 100%;
+  background-color: #FFFFFF;
+  border: 1px solid #64748B;
+  padding: 1rem;
+  border-radius: 0.5rem;
 }
 /*# sourceMappingURL=app.css.map */

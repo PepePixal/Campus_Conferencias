@@ -50,5 +50,23 @@
         <h3 class="registro__heading">Tu Registro</h3>
         <!-- contenido para este div, desde JS -->
         <div id="registro-resumen" class="registro-resumen"></div>
+
+        <div class="registro__regalo">
+            <label for="regalo" class="registro__label">Selecciona un regalo</label>
+            <select id="regalo" class="registro__select">
+                <option value="">-- Selecciona tu regalo --</option>
+                <!-- itera los regalos obtenidos de la tabla, para mostrarlos como opciones -->
+                <?php foreach($regalos as $regalo) { ?>
+                    <!-- por cada regalo una opción -->
+                    <option value="<?php echo $regalo->id; ?>"><?php echo $regalo->nombre; ?></option>
+                <?php } ?>
+            </select>
+        </div>
+
+        <form id="registro" class="formulario">
+            <div class="formulario__campo">
+                <input type="submit" class="formulario__submit formulario__submit--full" value="Registrarme">
+            </div>
+        </form>
     </aside>
 </div>
