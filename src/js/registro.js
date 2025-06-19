@@ -152,7 +152,7 @@ import Swal from 'sweetalert2';
             if( eventosId.length === 0 || regaloId === '') {
                 //alerta usando la librería importada sweetalert2
                 Swal.fire({
-                    title: 'error',
+                    title: 'Error',
                     text: 'Elige al menos un Evento y un Regalo',
                     icon: 'error',
                     confirmButtonText: 'OK'
@@ -169,14 +169,42 @@ import Swal from 'sweetalert2';
 
             //consulta fetch api con método POST, enviando datos
             const url = '/finalizar-registro/conferencias';
+            //hace la consulta y obtiene una respuesta
             const respuesta = await fetch( url, {
                 method: 'POST',
                 body: datos
             });
+
+            //espera a recibir respuesta de la solicitud tipo POST
+            //en el método conferencias() de RegistroController.php
             const resultado = await respuesta.json();
 
-            console.log(resultado);
+            //valida si la llave .resultado del obj json resultado, es true
+            if(resultado.resultado) {
+                //alerta usando la librería importada sweetalert2
+                Swal.fire(
+                    'Registrado',
+                    'Tus conferencias se han registrado correctamente, te esperamos en el CampusDevWeb',
+                    'success'
 
+                //cuando el usuario pulse el botón de la alerta, entonces se ejecuta función call back
+                //que redirige a la url pasando el token en el id de la url, que mostrará el boleto virtual
+                ).then( () => location.href = `/boleto?id=${resultado.token}`)
+
+
+            } else {
+                //alerta usando la librería importada sweetalert2
+                Swal.fire({
+                    title: 'Error',
+                    text: 'Hubo un error en el registro. Revisa la disponibilidad.',
+                    icon: 'error',
+                    confirmButtonText: 'OK'
+
+                //cuando el usuario pulse el botón de la alerta, entonces se ejecuta función call back,
+                //que recargará la página actual
+                }).then( () => location.reload())
+            }
+            
         }
 
     }

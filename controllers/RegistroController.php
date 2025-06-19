@@ -12,6 +12,7 @@ use Model\Ponente;
 use Model\Usuario;
 use Model\Registro;
 use Model\Categoria;
+use Model\EventosRegistros;
 
 
 class RegistroController {
@@ -24,14 +25,20 @@ class RegistroController {
             header('Location: /');
         }
 
-        //Verificar si el id del usuario ya esta registrado en algún evento.
+        //**Verificar si el id del usuario ya esta registrado en algún evento.
         //busca el id del usuario logueado, en la columna usario_id de la tabla registros 
         $registro = Registro::where('usuario_id', $_SESSION['id']);
-        //Si el registro existe y el id del paquete registraso es "3" (gratis):
+
+        //Si el registro existe y el id del paquete registrado es "3" (gratis):
         if(isset($registro) && $registro->paquete_id === "3") {
             //redirige al usuario a la URL boleto con su id = token, que muestra su ticket
             header('Location: /boleto?id=' . urlencode($registro->token));
         }
+
+        if(isset($registro) && $registro->paquete_id === "1") {
+            header('Location: /finalizar-registro/conferencias');
+        }
+
 
         //llamar render enviando el archivo para la vista y datos
         $router->render('registro/crear', [
@@ -49,14 +56,17 @@ class RegistroController {
                 header('Location: /login');
             }
 
-            //Verificar si el id del usuario ya esta registrado en algún evento.
+            //** Verificar si el id del usuario ya esta registrado en algún evento.
             //busca el id del usuario logueado, en la columna usario_id de la tabla registros 
             $registro = Registro::where('usuario_id', $_SESSION['id']);
+
             //Si el registro existe y el id del paquete registraso es "3" (gratis):
             if(isset($registro) && $registro->paquete_id === "3") {
                 //redirige al usuario a la URL boleto con su id = token, que muestra su ticket
                 header('Location: /boleto?id=' . urlencode($registro->token));
             }
+
+
 
             //genera token random unico con md5(...),
             //sustrae del caracter 0 al 8 y lo asigna a $token
@@ -64,7 +74,7 @@ class RegistroController {
 
             //**Crear registro para almacenar en la BD
             //define arreglo asociativo según Active Model y asignando datos
-            $datos = array(
+            $datos = [
                 //3 es el id del paquete gratis
                 'paquete_id' => 3,
                 //el paquete gratis no requiere pago
@@ -72,7 +82,7 @@ class RegistroController {
                 'token' => $token,
                 //obtiene el id del usuario de la sesión abierta al loguearse
                 'usuario_id' => $_SESSION['id']
-            );
+            ];
 
             //instancia y sincroniza el objeto del modelo Registro, con los $datos
             $registro = new Registro($datos);
@@ -139,8 +149,9 @@ class RegistroController {
 
             //Valiar si POST, del fetch() POST de Paypal, viene vacio
             if(empty($_POST)) {
-                //pinta un json vacio, retorna el código y se para
+                //retorna un json vacio
                 echo json_encode([]);
+                //para el código aquí.
                 return;
             }
 
@@ -170,7 +181,6 @@ class RegistroController {
                     'resultado' => 'error'
                 ]);
            }
-
         };
     }
 
@@ -188,12 +198,38 @@ class RegistroController {
         //busaca el usuario en la columna usuario_id, en tabla registros
         $registro = Registro::where('usuario_id', $usuario_id);
 
-        //valida si el paquete registrado por el usuario NO es 1 (Presencial)
+                //busca el id del registro en la columna registro_id de la tabla eventos_registros
+                $registroFinalizado = EventosRegistros::where('registro_id', $registro->id);
+
+                //valida si registro existe y si paquete_id es 2 (Pase Virtual)
+                if(isset($registro) && $registro->paquete_id === "2") {
+                    //redirige a la url /boleto enviando el token en el ?=id, para mostrar el boleto
+                    header('Location: /boleto?id=' . urlencode($registro->token));
+                    //para el código aquí.
+                    return;
+                }
+
+                //valida si existe registroFinalizado
+                if(isset($registroFinalizado)) {
+                    //redirige a la url /boleto enviando el token en el ?=id, para mostrar el boleto
+                    header('Location: /boleto?id=' . urlencode($registro->token));
+                    //para el código aquí.
+                    return;
+                }
+
+
+        //valida si el id paquete registrado por el usuario NO es 1 (Presencial)
         if($registro->paquete_id !== "1") {
             //redireccióna a inicio
             header('Location: /');
+            return;
         }
 
+        // //si el registro contiene un regalo_id, el registro se ha realizado
+        // if(isset($registro->regalo_id)) {
+        //     //redireccionar a la url boleto, enviando el token en el id de la url
+        //     header('Location: /boleto?id=' . urlencode($registro->token));
+        // }
         
         //ordenar() obtiene TODOS los eventos ordenados, 
         //según columna y tipo de ordenación. Requiere columna y orden
@@ -265,26 +301,30 @@ class RegistroController {
 
             //valida si eventos está vacio
             if(empty($eventos)) {
+                //crea array asoc con clave 'resultado' valor false,
+                //convierte el array asoc en un objeto json y lo retorna como respuesta
                 echo json_encode(['resultado' => false]);
-                //retorna respuesta y para el código aquí
+                //para el código aquí
                 return;
             }
 
             // Obtener el registro de usuario de la tabla, enviando columna y id
             $registro = Registro::where('usuario_id', $_SESSION['id']);
 
-            //valida si NO existe $registro y NO es diferente de null ó ||
+            //valida si $registro NO existe y NO es diferente de null ó ||
             //el valor de paquete_id en $registro, NO es igual a 1 (Presencial)
             if(!isset($registro) || $registro->paquete_id !== "1") {
-                //retorna json con resultado false y para el código
+                //crea array asoc con clave 'resultado' valor false,
+                //convierte el array asoc en un objeto json y lo retorna como respuesta
                 echo json_encode(['resultado' => false]);
+                //para el código aquí
                 return;
             }
             
             //define arreglo para almacenar los eventos existentes y con disponibilidad
             $eventos_array = [];
 
-            //** Validar la disponibilidad de cada uno de los eventos seleccionados.
+            //** Validar la disponibilidad de cada uno de los eventos seleccionados por el user.
             //Iterea el arreglo $eventos con los id de los eventos seleccionados y por cada evento_id
             foreach($eventos as $evento_id) {
                 //busca el evento por su id, en la tabla eventos, de la DB
@@ -292,12 +332,14 @@ class RegistroController {
 
                 //valida si el evento NO existe o || la cantidad de eventos disponibles es = "0"
                 if(!isset($evento) || $evento->disponibles === "0") {
-                    //retorna json con resultado false y para el código
+                    //crea array asoc con clave 'resultado' valor false,
+                    //convierte el array asoc en un objeto json y lo retorna como respuesta
                     echo json_encode(['resultado' => false]);
+                    //para el código aquí
                     return;
                 }
 
-                //agrega cada evento validado (objeto), al arreglo
+                //agrega cada evento validado (objeto), al final del arreglo
                 $eventos_array[] = $evento;
             }
 
@@ -309,9 +351,47 @@ class RegistroController {
                 //guardar todo el evento en la BD con la nueva cantidad de disponibles
                 $evento->guardar();
 
-                //Almacenar el registro de eventos seleccionados y regalo
-                
+                //**Almacenar los eventos y el registro en la tabla pivote eventos_registros
+                //define arreglo asoc según el modelo Active Record y le asigna llaves y valores
+                //convertidos a tipo int 
+                $datos = [
+                    'evento_id' => (int) $evento->id,
+                    'registro_id' => (int) $registro->id
+                ];
+
+                //instalcia el modelo EventosRegistros y le asigna los valoresen $datos;
+                $registro_usuario = new EventosRegistros($datos);
+                //almacena los eventos y el registro en la tabla eventos_registros de la DB
+                $registro_usuario->guardar();
             }
+
+            //** Almacenar el regalo_id en la tabla registros de la DB
+            //sincroniza solo la llave regalo_id de arreglo $egistro,
+            //con el valor de la llave regalo_id del arreglo en POST
+            $registro->sincronizar(['regalo_id' => $_POST['regalo_id']]);
+
+            //guardar el objeto registro en la DB y retorna un resultado bool
+            $resultado = $registro->guardar();
+
+            //si el $resultado de guardar() es true
+            if($resultado) {
+                //crea array asoc con llave 'resultado' y el valor de $resultado (true),
+                // la llave token y el valor de token en $registro,
+                //convierte el array asoc en un objeto json y lo retorna como respuesta
+                echo json_encode([
+                    'resultado' => $resultado,
+                    'token' => $registro->token
+                ]);
+
+            } else {
+                //crea array asoc con clave 'resultado' valor false,
+                //convierte el array asoc en un objeto json y lo retorna como respuesta
+                echo json_encode(['resultado' => false]);
+            }
+
+            //para el código aquí
+            return;
+
         }
 
         //llamar render enviando el archivo para la vista y datos
