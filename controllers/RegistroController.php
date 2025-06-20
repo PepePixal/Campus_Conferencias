@@ -23,28 +23,36 @@ class RegistroController {
         if(!is_auth()) {
             //redirige al usuario al inicio
             header('Location: /');
+            //para el código aquí. ( también sirve die() )
+            return;
         }
 
         //**Verificar si el id del usuario ya esta registrado en algún evento.
         //busca el id del usuario logueado, en la columna usario_id de la tabla registros 
         $registro = Registro::where('usuario_id', $_SESSION['id']);
 
-        //Si el registro existe y el id del paquete registrado es "3" (gratis):
-        if(isset($registro) && $registro->paquete_id === "3") {
+        //Si el registro existe y el id del paquete registrado es "3" (GRATIS), o || 
+        //el id del paquete registrado es 2 (VIRTUAL):
+        if(isset($registro) && $registro->paquete_id === "3" || $registro->paquete_id === "2") {
             //redirige al usuario a la URL boleto con su id = token, que muestra su ticket
             header('Location: /boleto?id=' . urlencode($registro->token));
+            //para el código aquí. ( también sirve die() )
+            return;
         }
-
+        
+        //Si el registro existe y el id del paquete registrado es "1" (PRESENCIAL):
         if(isset($registro) && $registro->paquete_id === "1") {
             header('Location: /finalizar-registro/conferencias');
+            //para el código aquí. ( también sirve die() )
+            return;
         }
-
 
         //llamar render enviando el archivo para la vista y datos
         $router->render('registro/crear', [
             'titulo' => 'Finalizar Registro al Campus',
         ]);
     }
+
 
     //método para la inscripción de usuarios registrados, al plan gratuito
     public static function gratis() {
@@ -54,6 +62,8 @@ class RegistroController {
             if(!is_auth()) {
                 //redirige al usuario
                 header('Location: /login');
+                //para el código aquí. ( también sirve die() )
+                return;
             }
 
             //** Verificar si el id del usuario ya esta registrado en algún evento.
@@ -64,9 +74,9 @@ class RegistroController {
             if(isset($registro) && $registro->paquete_id === "3") {
                 //redirige al usuario a la URL boleto con su id = token, que muestra su ticket
                 header('Location: /boleto?id=' . urlencode($registro->token));
+                //para el código aquí. ( también sirve die() )
+                return;
             }
-
-
 
             //genera token random unico con md5(...),
             //sustrae del caracter 0 al 8 y lo asigna a $token
@@ -93,9 +103,12 @@ class RegistroController {
                 //redirecciona al usuario, a la url /boleto con ?id= al token generado para el registro
                 //la func php urlencode() toma el string y lo convierte en un formato seguro para URL
                 header('Location: /boleto?id=' . urlencode($registro->token));
+                //para el código aquí. ( también sirve die() )
+                return;
             } 
         };
     }
+
 
     public static function boleto(Router $router) {
 
@@ -107,6 +120,8 @@ class RegistroController {
         if(!$id || !strlen($id) === 8) {
             //redirege al usuario al inicio
             header('Location: /');
+            //para el código aquí. ( también sirve die() )
+            return;
         }
 
         //Buscar el $id de la URL, en la columna token de la tabla registros de la BD y
@@ -117,6 +132,8 @@ class RegistroController {
         if(!$registro) {
             //redirige al usuario al inicio
             header('Location: /');
+            //para el código aquí. ( también sirve die() )
+            return;
         }
 
         //**obtener la info de las tablas relacionadas con la tabla registro
@@ -136,6 +153,7 @@ class RegistroController {
         ]);
     }
 
+
     //método para guardar en la DB, el registro a alguno de los planes de pago
     public static function pagar(Router $router) {
         
@@ -145,6 +163,8 @@ class RegistroController {
             if(!is_auth()) {
                 //redirige al usuario
                 header('Location: /login');
+                //para el código aquí. ( también sirve die() )
+                return;
             }
 
             //Valiar si POST, del fetch() POST de Paypal, viene vacio
@@ -190,6 +210,8 @@ class RegistroController {
         //comprobar si el usuario no está autenticado
         if(!is_auth()) {
             header('Location: /login');
+            //para el código aquí. ( también sirve die() )
+            return;
         }
 
         //**validar que el usuario logueado tenga registrado un Paquete Presencial
@@ -198,25 +220,24 @@ class RegistroController {
         //busaca el usuario en la columna usuario_id, en tabla registros
         $registro = Registro::where('usuario_id', $usuario_id);
 
-                //busca el id del registro en la columna registro_id de la tabla eventos_registros
-                $registroFinalizado = EventosRegistros::where('registro_id', $registro->id);
+        //busca el id del registro en la columna registro_id de la tabla eventos_registros
+        $registroFinalizado = EventosRegistros::where('registro_id', $registro->id);
 
-                //valida si registro existe y si paquete_id es 2 (Pase Virtual)
-                if(isset($registro) && $registro->paquete_id === "2") {
-                    //redirige a la url /boleto enviando el token en el ?=id, para mostrar el boleto
-                    header('Location: /boleto?id=' . urlencode($registro->token));
-                    //para el código aquí.
-                    return;
-                }
+        //valida si registro existe y si paquete_id es 2 (Pase Virtual)
+        if(isset($registro) && $registro->paquete_id === "2") {
+            //redirige a la url /boleto enviando el token en el ?=id, para mostrar el boleto
+            header('Location: /boleto?id=' . urlencode($registro->token));
+            //para el código aquí.
+            return;
+        }
 
-                //valida si existe registroFinalizado
-                if(isset($registroFinalizado)) {
-                    //redirige a la url /boleto enviando el token en el ?=id, para mostrar el boleto
-                    header('Location: /boleto?id=' . urlencode($registro->token));
-                    //para el código aquí.
-                    return;
-                }
-
+        //valida si existe registroFinalizado
+        if(isset($registroFinalizado)) {
+            //redirige a la url /boleto enviando el token en el ?=id, para mostrar el boleto
+            header('Location: /boleto?id=' . urlencode($registro->token));
+            //para el código aquí.
+            return;
+        }
 
         //valida si el id paquete registrado por el usuario NO es 1 (Presencial)
         if($registro->paquete_id !== "1") {
@@ -225,12 +246,6 @@ class RegistroController {
             return;
         }
 
-        // //si el registro contiene un regalo_id, el registro se ha realizado
-        // if(isset($registro->regalo_id)) {
-        //     //redireccionar a la url boleto, enviando el token en el id de la url
-        //     header('Location: /boleto?id=' . urlencode($registro->token));
-        // }
-        
         //ordenar() obtiene TODOS los eventos ordenados, 
         //según columna y tipo de ordenación. Requiere columna y orden
         $eventos = Evento::ordenar('hora_id', 'ASC');
@@ -292,6 +307,8 @@ class RegistroController {
             //comprobar si el usuario no está autenticado
             if(!is_auth()) {
                 header('Location: /login');
+                //para el código aquí. ( también sirve die() )
+                return;
             }
 
             //['eventos'] contiene una cadena de strigs separados por comas,
