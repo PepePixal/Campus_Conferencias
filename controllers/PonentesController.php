@@ -10,6 +10,11 @@ use Intervention\Image\ImageManagerStatic as Image;
 class PonentesController {
 
     public static function index(Router $router) {
+        
+        //comprueba si el usuario no es tipo admin redirege a login
+        if(!is_admin()) {
+            header('Location: /login');
+        }
 
         //**Paginación
         //obtiene la página actual, del valor de la var 'page', en el query-string de la url,
@@ -45,10 +50,6 @@ class PonentesController {
         //El offset es la cantidad de registros a saltar del total, según  los registros por pagina que queramos mostrar y la página a mostrar
         $ponentes = Ponente::paginar($registros_por_pagina, $paginacion->offset());
 
-        //comprueba si el usuario no es tipo admin redirege a login
-        if(!is_admin()) {
-            header('Location: /login');
-        }
 
         //Enviar la vista y datos, al render()
         $router->render('admin/ponentes/index', [

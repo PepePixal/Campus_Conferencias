@@ -73,7 +73,6 @@ $router->post('/finalizar-registro/conferencias', [RegistroController::class, 'c
 // Mostrar la Incripción con Boleto Virtual
 $router->get('/boleto', [RegistroController::class, 'boleto']);
 
-
 //Área Pública
 $router->get('/', [PaginasController::class, 'index']);
 $router->get('/campusdevweb', [PaginasController::class, 'evento']);

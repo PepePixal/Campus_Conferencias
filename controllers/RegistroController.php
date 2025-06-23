@@ -31,6 +31,16 @@ class RegistroController {
         //busca el id del usuario logueado, en la columna usario_id de la tabla registros 
         $registro = Registro::where('usuario_id', $_SESSION['id']);
 
+
+        //como la primera vez que se registra un usuario todavía no hay ningún registro,
+        //$registro será null y dará un aviso de error.
+        //valida si $registro es null, instancia el modelo de registro con valores vacios
+        //para que no de null en los ifs siguientes
+        if(!isset($registro)) {
+            $registro = new Registro();
+        }
+    
+
         //Si el registro existe y el id del paquete registrado es "3" (GRATIS), o || 
         //el id del paquete registrado es 2 (VIRTUAL):
         if(isset($registro) && $registro->paquete_id === "3" || $registro->paquete_id === "2") {
@@ -220,7 +230,8 @@ class RegistroController {
         //busaca el usuario en la columna usuario_id, en tabla registros
         $registro = Registro::where('usuario_id', $usuario_id);
 
-        //busca el id del registro en la columna registro_id de la tabla eventos_registros
+        //busca el id del registro, en la columna registro_id de la tabla eventos_registros,
+        //si existe significa que es un registro Presencial, solo los Presenciales aparencen en esa tabla.
         $registroFinalizado = EventosRegistros::where('registro_id', $registro->id);
 
         //valida si registro existe y si paquete_id es 2 (Pase Virtual)
@@ -231,7 +242,7 @@ class RegistroController {
             return;
         }
 
-        //valida si existe registroFinalizado
+        //valida si existe registroFinalizado, significa que es un registro Presencial 
         if(isset($registroFinalizado)) {
             //redirige a la url /boleto enviando el token en el ?=id, para mostrar el boleto
             header('Location: /boleto?id=' . urlencode($registro->token));
