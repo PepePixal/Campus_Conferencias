@@ -1474,6 +1474,10 @@ h3 {
   width: min(95%, 80rem);
   margin: 0 auto;
 }
+.dashboard__grafica {
+  width: min(95%, 80rem);
+  margin: 0 auto;
+}
 
 .table {
   width: 100%;
@@ -1583,6 +1587,56 @@ h3 {
 .listado-ponentes__ponente--seleccionado {
   background-color: #007df4;
   color: #FFFFFF;
+}
+
+.bloques {
+  width: min(95%, 140rem);
+  margin: 0 auto;
+}
+.bloques__grid {
+  display: grid;
+  gap: 3rem;
+  grid-template-columns: repeat(1, 1fr);
+}
+@media (min-width: 768px) {
+  .bloques__grid {
+    display: grid;
+    gap: 3rem;
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.bloque {
+  padding: 2rem;
+  color: #FFFFFF;
+  border-radius: 1rem;
+}
+.bloque:nth-child(1) {
+  background-image: linear-gradient(to left top, #f37a08, rgb(249.1832669323, 161.2051792829, 78.3167330677));
+}
+.bloque:nth-child(2) {
+  background-image: linear-gradient(to left top, #a855f7, rgb(205.3904494382, 158.0617977528, 250.4382022472));
+}
+.bloque:nth-child(3) {
+  font-size: 1.6rem;
+  background-image: linear-gradient(to left top, #568b0b, rgb(129.86, 209.89, 16.61));
+}
+.bloque:nth-child(4) {
+  font-size: 1.6rem;
+  background-image: linear-gradient(to left top, #17769E, rgb(34.5856353591, 167.1132596685, 222.9143646409));
+}
+.bloque__heading {
+  margin: 0 0 1.5rem 0;
+  font-size: 2.8rem;
+}
+.bloque__texto {
+  margin: 1rem 0;
+}
+.bloque__texto--cantidad {
+  margin: 4rem 0;
+  font-weight: 900;
+  font-size: 5rem;
+  text-align: center;
 }
 
 .eventos-registro {

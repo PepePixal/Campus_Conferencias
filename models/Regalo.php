@@ -8,6 +8,8 @@ class Regalo extends ActiveRecord {
 
     public $id;
     public $nombre;
+
+    public $total;
     
     function __construct($args = []) {
         $this->id = $args['id'] ?? null;

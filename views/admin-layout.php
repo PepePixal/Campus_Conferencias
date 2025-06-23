@@ -26,6 +26,10 @@
             </main>
         </div>
 
+    <!-- script CDN de la librería Chart.js para generar graficos -->
+    <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+
     <script src="/build/js/bundle.min.js" defer></script>
+
 </body>
 </html>

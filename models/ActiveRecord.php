@@ -118,23 +118,31 @@ class ActiveRecord {
         return array_shift( $resultado ) ;
     }
 
-    // Obtener Registros con cierta cantidad
+    // Obtener Registros, limitando a cierta cantidad
     public static function get($limite) {
-        $query = "SELECT * FROM " . static::$tabla . " LIMIT $limite ORDER BY id DESC" ;
+        $query = "SELECT * FROM " . static::$tabla . " ORDER BY id DESC LIMIT $limite " ;
         $resultado = self::consultarSQL($query);
-        return array_shift( $resultado ) ;
+        return $resultado;
     }
 
     // Busqueda Where con Columna 
     public static function where($columna, $valor) {
         $query = "SELECT * FROM " . static::$tabla . " WHERE $columna = '$valor'";
         $resultado = self::consultarSQL($query);
+        //retorna solo el priment elemento del arreglo en $resultado
         return array_shift( $resultado ) ;
     }
 
     // Retorna los registros oredenados según la $columna y en un $orden
     public static function ordenar($columna, $orden) {
         $query = "SELECT * FROM " . static::$tabla . " ORDER BY $columna $orden";
+        $resultado = self::consultarSQL($query);
+        return $resultado;
+    }
+    
+    // Retornar cantidad limitada de registros según columna y en un orden
+    public static function ordenarLimite($columna, $orden, $limite) {
+        $query = "SELECT * FROM " . static::$tabla . " ORDER BY $columna $orden LIMIT $limite";
         $resultado = self::consultarSQL($query);
         return $resultado;
     }
@@ -211,6 +219,41 @@ class ActiveRecord {
         //extrae y retorna el prime valor del arreglo, la cantidad de registros
         return array_shift($total);
     }
+
+    //Obtener la cantidad total de registros, según los datos del array recibido. Con Where
+    public static function totalArray($array = []) {
+        //consulta SQL
+        $query = "SELECT COUNT(*) FROM " . static::$tabla . " WHERE ";
+
+        //itera el arreglo recibido, obteniendo llave $key y valor $value, de cada elemento
+        foreach($array as $key => $value){
+            //si la llave $key que está iterando, ES LA ÚLTIMA del arreglo
+            if($key == array_key_last($array)) {
+                //concatena a la parte del $query ya definida, sin el AND:
+                //el nombre de la llave y su valor, de cada elemento recibido en $array
+                $query .= " $key = '$value'";
+            
+            ///si la llave $key que está iterando, todavía NO es la última del arreglo:
+            } else {
+                //concatena a la parte del $query ya definida, con el AND:
+                //el nombre de la llave y su valor, de cada elemento recibido en $array
+                $query .= " $key = '$value' AND ";
+            }
+        }
+
+        //consulta dirécta a la DB, enviando el query SQL,
+        //si la conexión ha sido exitosa, retorna un objeto con info de la consulta
+        $resultado = self::$db->query($query);
+        
+        //procesa la info de $resultado y obtiene el resultado de la consulta
+        //como un arreglo asociativo o index,
+        //donde el el primer elemento es el número total de registros
+        $total = $resultado->fetch_array();
+        
+        //extrae y retorna el prime valor del arreglo, la cantidad de registros
+        return array_shift($total);
+    }
+
 
     // crea un nuevo registro
     public function crear() {
