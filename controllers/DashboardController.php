@@ -11,6 +11,12 @@ class DashboardController {
 
     public static function index(Router $router) {
 
+        //comprueba si el usuario no es tipo admin redirege a login
+        if(!is_admin()) {
+            header('Location: /login');
+            return;
+        }
+
         //** Obtener */
         //obtiene los últimos 5 registros a eventos, de la tabla registros
         $registros = Registro::get(5);

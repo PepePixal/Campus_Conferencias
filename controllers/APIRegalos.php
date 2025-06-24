@@ -9,6 +9,12 @@ class APIRegalos {
 
     public static function index() {
 
+        //valida si el usuario es tipo admin
+        if(!is_admin()) {
+            echo json_encode([]);
+            return;
+        }
+
         //obtiene todos los tipos de regalos
         $regalos = Regalo::all();
 
